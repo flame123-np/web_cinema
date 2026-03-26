@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cinemas - Cinema</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { primary: '#e9508c', 'background-light': '#f8f6f7' } } } };
+  </script>
+</head>
+<body class="bg-background-light text-slate-900 min-h-screen flex flex-col font-[Inter]">
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-8">
+        <a href="home.html" class="text-2xl font-black tracking-tight text-slate-900 shrink-0">Cinema</a>
+        <div class="hidden md:flex flex-1 max-w-md">
+          <label class="relative w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-primary">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <input id="page-search-input" class="block w-full p-2.5 pl-10 text-sm text-slate-900 bg-background-light border-none rounded-lg focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-slate-400" placeholder="ค้นหาโรงภาพยนตร์" type="text"/>
+          </label>
+        </div>
+        <div class="flex items-center gap-6">
+          <nav class="hidden lg:flex items-center gap-6">
+            <a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="home.html">หน้าแรก</a>
+            <a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="movies.html">ภาพยนตร์</a>
+            <a class="text-primary text-sm font-semibold transition-colors" href="cinemas.html">โรงภาพยนตร์</a>
+            <a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="promotions.html">โปรโมชั่น</a>
+          </nav>
+          <div class="flex items-center gap-3">
+            <div class="hidden sm:flex items-center bg-background-light rounded-full px-4 py-1.5 border border-slate-200">
+              <span class="material-symbols-outlined text-primary text-lg mr-2">stars</span>
+              <span id="member-points" class="text-sm font-bold text-slate-800">0 คะแนน</span>
+            </div>
+            <button class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 transition overflow-hidden" id="profile-btn" aria-label="ไปยังโปรไฟล์ผู้ใช้">
+              <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6q4FeHiQsMOkQmj95z4EzvVinKOtDV4QriFwJ-QOyxBuFStWbd8c0kj_D_uLRJ6mhM4F3cUHWJ5GRhfSXKrdY-VgnmwK5KrBS7imj4IS7ivi2TmK3w21WLLX4ogiMYQ3aNu1eHT36wlkALUffpQrsaUjif3sNoiT9SS6WHYMUr1HC1HnTWl4PxzYESchpE7NgSo7ELYMd4tPUeUjFSgwGChFzQ7Y6-YZaiuz_wrMBFptDjh4ZutyumxzRzrIQDT0m99Epmo1T99h0" id="profile-img"/>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-8">
+      <div>
+        <h1 class="text-3xl font-black mb-2">Cinemas</h1>
+        <p class="text-slate-600">รายชื่อโรงภาพยนตร์และสาขาที่ให้บริการ</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-6">
+      <button class="region-filter-btn px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-bold whitespace-nowrap" data-region="all">ทั้งหมด</button>
+      <button class="region-filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-region="กรุงเทพฯและปริมณฑล">กรุงเทพฯและปริมณฑล</button>
+      <button class="region-filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-region="ภาคเหนือ">ภาคเหนือ</button>
+      <button class="region-filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-region="ภาคตะวันออกเฉียงเหนือ">ภาคตะวันออกเฉียงเหนือ</button>
+      <button class="region-filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-region="ภาคตะวันออก">ภาคตะวันออก</button>
+      <button class="region-filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-region="ภาคใต้">ภาคใต้</button>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="cinema-grid">
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-12 mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">Cinema</h5>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li><a class="hover:text-primary" href="about.html">เกี่ยวกับเรา</a></li>
+            <li><a class="hover:text-primary" href="careers.html">สมัครงาน</a></li>
+            <li><a class="hover:text-primary" href="advertising.html">ติดต่อโฆษณา</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">บริการช่วยเหลือ</h5>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li><a class="hover:text-primary" href="faq.html">คำถามที่พบบ่อย</a></li>
+            <li><a class="hover:text-primary" href="contact.html">ติดต่อเรา</a></li>
+            <li><a class="hover:text-primary" href="terms-of-service.html">ข้อตกลงและเงื่อนไข</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">ภาพยนตร์</h5>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li><a class="hover:text-primary" href="home.html#movie-grid">กำลังฉาย</a></li>
+            <li><a class="hover:text-primary" href="home.html#coming-soon">โปรแกรมหน้า</a></li>
+            <li><a class="hover:text-primary" href="promotions.html">โปรโมชั่น</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">ติดตามเรา</h5>
+          <div class="flex gap-4">
+            <a class="text-slate-400 hover:text-primary transition" href="https://www.instagram.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">public</span></a>
+            <a class="text-slate-400 hover:text-primary transition" href="https://www.facebook.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">thumb_up</span></a>
+            <a class="text-slate-400 hover:text-primary transition" href="https://x.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">share</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-xs text-slate-400 pt-8 border-t border-slate-100">
+        © 2023 Cinema. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const searchInput = document.getElementById('page-search-input');
+      const cinemaGrid = document.getElementById('cinema-grid');
+      const filterButtons = Array.from(document.querySelectorAll('.region-filter-btn'));
+      let activeRegion = 'all';
+      const locationImageFallback = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Pattaya_beach_from_view_point.jpg/640px-Pattaya_beach_from_view_point.jpg';
+
+      const cinemas = [
+        {
+          name: 'Paragon Cineplex',
+          branch: 'Siam Paragon, Bangkok',
+          region: 'กรุงเทพฯและปริมณฑล',
+          systems: 'IMAX • 4DX • VIP',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Siam_Paragon_06.23.jpg'
+        },
+        {
+          name: 'Major Cineplex Ratchayothin',
+          branch: 'Ratchayothin, Bangkok',
+          region: 'กรุงเทพฯและปริมณฑล',
+          systems: 'Laser • Kids Cinema',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Major_Cineplex_Ratchayothin_and_traffic.jpg'
+        },
+        {
+          name: 'ICON CINECONIC',
+          branch: 'ICONSIAM, Bangkok',
+          region: 'กรุงเทพฯและปริมณฑล',
+          systems: 'IMAX • Dolby Atmos',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Magnolias_Waterfront_Residences_Iconsiam.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Westgate',
+          branch: 'Nonthaburi',
+          region: 'กรุงเทพฯและปริมณฑล',
+          systems: 'Laser • MX4D',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Central_Westgate_%2855%29.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Chiangmai Airport',
+          branch: 'Chiang Mai',
+          region: 'ภาคเหนือ',
+          systems: 'Laser • Kids Cinema',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ancient_city_wall_and_Chang_Phueak_Gate_in_Chiang_Mai.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Phitsanulok',
+          branch: 'Phitsanulok',
+          region: 'ภาคเหนือ',
+          systems: 'Digital Cinema',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Route_12_in_Phitsanulok_2.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Korat',
+          branch: 'Nakhon Ratchasima',
+          region: 'ภาคตะวันออกเฉียงเหนือ',
+          systems: 'IMAX • Laser',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/2019_02_Central_Mall_Korat_exterior.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Khon Kaen',
+          branch: 'Khon Kaen',
+          region: 'ภาคตะวันออกเฉียงเหนือ',
+          systems: 'Laser • Dolby Atmos',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ubosot_Wat_Klang_Khon_Kaen.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Udon',
+          branch: 'Udon Thani',
+          region: 'ภาคตะวันออกเฉียงเหนือ',
+          systems: 'Digital Cinema',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Udon_Thani_-_The_City_Pillar_Shrine_-_0002.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Rayong',
+          branch: 'Rayong',
+          region: 'ภาคตะวันออก',
+          systems: 'Laser • 3D',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rayong_Museum.jpg'
+        },
+        {
+          name: 'Major Cineplex Harbor Pattaya',
+          branch: 'Pattaya, Chonburi',
+          region: 'ภาคตะวันออก',
+          systems: 'Digital Cinema • Kids Cinema',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pattaya_beach_from_view_point.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Phuket',
+          branch: 'Phuket',
+          region: 'ภาคใต้',
+          systems: 'IMAX • Laser',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Central_Phuket_shopping_mall.jpg'
+        },
+        {
+          name: 'Major Cineplex Central Hatyai',
+          branch: 'Hat Yai, Songkhla',
+          region: 'ภาคใต้',
+          systems: 'Digital Cinema • Dolby Atmos',
+          image: 'https://commons.wikimedia.org/wiki/Special:FilePath/View_of_Hat_Yai_City_%28I%29.jpg'
+        }
+      ];
+
+      function renderCinemas() {
+        const keyword = (searchInput?.value || '').trim().toLowerCase();
+        const filtered = cinemas.filter((cinema) => {
+          const passRegion = activeRegion === 'all' || cinema.region === activeRegion;
+          const bag = `${cinema.name} ${cinema.branch} ${cinema.region} ${cinema.systems}`.toLowerCase();
+          const passKeyword = !keyword || bag.includes(keyword);
+          return passRegion && passKeyword;
+        });
+
+        if (!filtered.length) {
+          cinemaGrid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">ไม่พบสาขาที่ตรงกับการค้นหา</div>';
+          return;
+        }
+
+        cinemaGrid.innerHTML = filtered.map((cinema) => `
+          <div class="group flex flex-col gap-3 rounded-xl">
+            <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-200 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+              <img alt="${cinema.name}" class="w-full h-full object-cover" src="${cinema.image || locationImageFallback}" onerror="this.onerror=null;this.src='${locationImageFallback}';" />
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent p-3">
+                <span class="inline-flex bg-primary/90 text-white text-[11px] font-semibold px-2 py-1 rounded">${cinema.region}</span>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors">${cinema.name}</h3>
+              <p class="text-sm text-slate-500 mt-1">${cinema.branch}</p>
+              <p class="text-xs text-slate-500 mt-1">${cinema.systems}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activeRegion = button.getAttribute('data-region') || 'all';
+          filterButtons.forEach((btn) => {
+            btn.classList.remove('bg-slate-900', 'text-white');
+            btn.classList.add('bg-background-light', 'text-slate-600');
+          });
+          button.classList.remove('bg-background-light', 'text-slate-600');
+          button.classList.add('bg-slate-900', 'text-white');
+          renderCinemas();
+        });
+      });
+
+      if (searchInput) {
+        searchInput.addEventListener('input', renderCinemas);
+      }
+
+      renderCinemas();
+
+    })();
+  </script>
+
+  <div id="auth-backdrop" class="fixed inset-0 bg-black/0 backdrop-blur-0 transition-all duration-300 z-40 hidden" style="pointer-events: none;"></div>
+
+  <div id="auth-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-background-light rounded-2xl border border-slate-300 shadow-2xl max-w-md w-full transform transition-all duration-300 overflow-hidden">
+      <div class="flex items-center justify-between p-6 border-b border-slate-300">
+        <h2 class="text-2xl font-black text-slate-900" id="modal-title">เข้าสู่ระบบ</h2>
+        <button id="modal-close-btn" class="text-slate-400 hover:text-slate-600">
+          <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+      </div>
+      <div class="p-6">
+        <div class="flex gap-2 mb-6 bg-slate-200 p-1 rounded-lg">
+          <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-login active bg-white text-slate-900" data-tab="login">เข้าสู่ระบบ</button>
+          <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-signup text-slate-600" data-tab="signup">สร้างบัญชี</button>
+        </div>
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">อีเมล</label>
+            <input id="login-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">รหัสผ่าน</label>
+            <input id="login-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+          </div>
+          <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">เข้าสู่ระบบ</button>
+          <p class="text-slate-600 text-sm text-center" id="login-error"></p>
+        </form>
+        <form id="signup-form" class="space-y-4 hidden">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">ชื่อเล่น</label>
+            <input id="signup-nickname" type="text" placeholder="ชื่อของคุณ" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">อีเมล</label>
+            <input id="signup-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">รหัสผ่าน</label>
+            <input id="signup-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">ยืนยันรหัสผ่าน</label>
+            <input id="signup-confirm-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+          </div>
+          <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">สร้างบัญชี</button>
+          <p class="text-slate-600 text-sm text-center" id="signup-error"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="profile-menu" class="absolute top-20 right-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg hidden z-40 min-w-48">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+      <p class="font-bold text-slate-900 dark:text-white" id="user-name">ผู้ใช้</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400" id="user-email">email@example.com</p>
+    </div>
+    <button id="logout-btn" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-lg">logout</span>
+      ออกจากระบบ
+    </button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
+    import { initializeAuthUI } from './auth.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyC0I4lXYHrxh1543AF1NZcdAYulS2jbftM',
+      authDomain: 'frame-4e170.firebaseapp.com',
+      projectId: 'frame-4e170',
+      storageBucket: 'frame-4e170.firebasestorage.app',
+      messagingSenderId: '585102075629',
+      appId: '1:585102075629:web:f5c9d3e3745b8a35570ee4',
+      measurementId: 'G-0TCR1Y4LP2'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    initializeAuthUI(app, firebaseConfig);
+  </script>
+</body>
+</html>

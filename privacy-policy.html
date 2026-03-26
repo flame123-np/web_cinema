@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>นโยบายความเป็นส่วนตัว</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#e9508c',
+            'background-light': '#f8f6f7',
+            surface: '#ffffff'
+          },
+          fontFamily: {
+            display: ['Inter', 'Noto Sans Thai', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background-light font-display text-slate-900 min-h-screen">
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-surface rounded-2xl border border-slate-200 p-6">
+      <h1 class="text-2xl font-black mb-4">นโยบายความเป็นส่วนตัว</h1>
+      <ul class="space-y-3 text-sm text-slate-700 list-disc pl-5">
+        <li>ระบบเก็บข้อมูลที่จำเป็นต่อการจองตั๋ว เช่น อีเมล รอบฉาย และรายการที่นั่ง</li>
+        <li>ข้อมูลส่วนบุคคลจะถูกใช้เพื่อยืนยันการจอง การชำระเงิน และการให้บริการหลังการขายเท่านั้น</li>
+        <li>ระบบไม่เปิดเผยข้อมูลส่วนบุคคลให้บุคคลภายนอก ยกเว้นกรณีที่กฎหมายกำหนด</li>
+        <li>ผู้ใช้งานสามารถติดต่อฝ่ายบริการลูกค้าเพื่อสอบถาม แก้ไข หรือลบข้อมูลตามสิทธิของตน</li>
+      </ul>
+      <div class="mt-6">
+        <a href="home.html" class="inline-flex items-center px-4 py-2 rounded-lg bg-primary text-white font-bold hover:opacity-90">กลับหน้าแรก</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

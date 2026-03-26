@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cinema - Home</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e9508c",
+                        "background-light": "#f8f6f7",
+                        "background-dark": "#211117",
+                        "surface": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans Thai", "sans-serif"],
+                        "body": ["Inter", "Noto Sans Thai", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+        }
+        /* Hide scrollbar for chrome/safari/opera */
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+<!-- Header / Navigation -->
+<header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-20 gap-8">
+<!-- Logo & Brand -->
+<a class="text-2xl font-black tracking-tight text-slate-900 shrink-0" href="home.html">Cinema</a>
+<!-- Search Bar -->
+<div class="hidden md:flex flex-1 max-w-md">
+<label class="relative w-full">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-primary">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="block w-full p-2.5 pl-10 text-sm text-slate-900 bg-background-light border-none rounded-lg focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-slate-400" id="home-search-input" placeholder="Search movies, cinemas..." type="text"/>
+</label>
+</div>
+<!-- Nav & Profile -->
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-primary text-sm font-semibold transition-colors" href="home.html">หน้าแรก</a>
+<a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="movies.html">ภาพยนตร์</a>
+<a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="cinemas.html">โรงภาพยนตร์</a>
+<a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="promotions.html">โปรโมชั่น</a>
+</nav>
+<div class="flex items-center gap-3">
+<!-- Member Points Pill -->
+<div class="hidden sm:flex items-center bg-background-light rounded-full px-4 py-1.5 border border-slate-200">
+<span class="material-symbols-outlined text-primary text-lg mr-2">stars</span>
+<span class="text-sm font-bold text-slate-800" id="member-points">0 คะแนน</span>
+</div>
+<!-- Profile/Login -->
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 transition overflow-hidden" id="profile-btn">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6q4FeHiQsMOkQmj95z4EzvVinKOtDV4QriFwJ-QOyxBuFStWbd8c0kj_D_uLRJ6mhM4F3cUHWJ5GRhfSXKrdY-VgnmwK5KrBS7imj4IS7ivi2TmK3w21WLLX4ogiMYQ3aNu1eHT36wlkALUffpQrsaUjif3sNoiT9SS6WHYMUr1HC1HnTWl4PxzYESchpE7NgSo7ELYMd4tPUeUjFSgwGChFzQ7Y6-YZaiuz_wrMBFptDjh4ZutyumxzRzrIQDT0m99Epmo1T99h0" id="profile-img"/>
+</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+<!-- Hero Section -->
+<section class="relative w-full rounded-2xl overflow-hidden shadow-lg group">
+<div class="relative w-full aspect-[21/9] md:aspect-[2.5/1] bg-slate-900">
+<img alt="Cinematic dark movie scene with dramatic lighting" class="absolute inset-0 w-full h-full object-cover opacity-60" id="hero-banner-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkSbihnFS6FSqjiqbIeyYaByD2nmOcbyvpi6fIy85cTuFEj6AJEqNUU2It6z83HEQkEzmRbzvdh2Ptiu4x5rb92LH8bVxvZSi4j83SWNRcEN0JKIOlZnUtDu2kLstIBfpLmEBGjrFd264DDBhhDOkHCz-NAdb0Aa2NJ4YzLfhddHiuW1BxMCtZiC5_e2AZHj8bRNNjSfNkP6KFs5xfuJbEsAW7eh86BzJ8HOfViIIEdqxB9Ni2t2spH1qR3cc67q89U57-KKDmMCwK"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 md:p-12 w-full md:w-2/3 lg:w-1/2 flex flex-col gap-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold bg-primary text-white w-fit" id="hero-format-badge">
+                        IMAX 3D
+                    </span>
+<h1 class="text-3xl md:text-5xl font-black text-white leading-tight tracking-tight" id="hero-banner-title">
+                        ธี่หยด (Death Whisperer)
+                    </h1>
+<div class="flex flex-wrap items-center gap-3 text-slate-300 text-sm md:text-base">
+<span class="flex items-center gap-1" id="hero-banner-duration"><span class="material-symbols-outlined text-lg">schedule</span> 2 ชม. 5 นาที</span>
+<span>|</span>
+<span id="hero-banner-genre">สยองขวัญ</span>
+<span>|</span>
+<span class="bg-white/20 px-2 py-0.5 rounded text-xs text-white" id="hero-banner-age">15+</span>
+</div>
+<p class="text-slate-300 text-sm md:text-base line-clamp-2 md:line-clamp-3" id="hero-banner-description">
+                        เรื่องราวสยองขวัญที่เกิดขึ้นในหมู่บ้านห่างไกล เมื่อเสียงเพรียกปริศนายามค่ำคืนนำมาซึ่งความตายที่ไม่อาจหลีกเลี่ยง
+                    </p>
+<div class="flex gap-3 mt-2">
+<button class="bg-primary hover:bg-pink-600 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 transition-colors" id="hero-book-btn">
+<span class="material-symbols-outlined">confirmation_number</span>
+                            จองตั๋วภาพยนตร์
+                        </button>
+<button class="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 transition-colors" id="hero-trailer-btn">
+<span class="material-symbols-outlined">play_circle</span>
+                            ตัวอย่าง
+                        </button>
+</div>
+</div>
+</div>
+<!-- Carousel Indicators -->
+<div class="absolute bottom-4 right-4 md:bottom-8 md:right-8 flex gap-2" id="hero-indicators">
+</div>
+</section>
+<!-- Main Content Area -->
+<div class="flex flex-col gap-8">
+<!-- Filters & Section Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+<div class="flex items-baseline gap-4">
+<h2 class="text-2xl font-black text-slate-900">กำลังฉาย</h2>
+<span class="text-slate-500 font-medium">Now Showing</span>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+<button class="filter-btn px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-bold whitespace-nowrap" data-genre="all">ทั้งหมด</button>
+<button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="แอ็คชัน">แอ็คชัน</button>
+<button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="โรแมนติก">โรแมนติก</button>
+<button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="สยองขวัญ">สยองขวัญ</button>
+<button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="แอนิเมชัน">แอนิเมชัน</button>
+</div>
+</div>
+<!-- Movie Grid (Now Showing) -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="movie-grid">
+<!-- Dynamic movie cards -->
+</div>
+<div class="flex justify-center pt-4" id="movie-pagination">
+</div>
+</div>
+<!-- Coming Soon Section -->
+<div class="space-y-6 pt-8 pb-12 border-t border-slate-200" id="coming-soon">
+<div class="flex items-baseline justify-between">
+<div class="flex items-baseline gap-4">
+<h2 class="text-2xl font-black text-slate-900">โปรแกรมหน้า</h2>
+<span class="text-slate-500 font-medium">Coming Soon</span>
+</div>
+</div>
+<div class="flex overflow-x-auto gap-6 pb-6 no-scrollbar snap-x">
+<!-- CS Card 1 -->
+<div class="min-w-[160px] md:min-w-[200px] snap-start group cursor-pointer">
+<div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 mb-3 shadow-md">
+<img alt="Coming soon movie poster with mysterious atmosphere" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvfIg_4g8by9RLxqtfM0RhajvlDxPoz9n2R3Z5QT_IoV7UhiFN8KkNvX7sgGj7mpT_kvJmKASeC54LTkFnVrZShmQha6sNtyG7ahs9V9WzUCqAOeN6SGMmpyhDqPe7ALvmfSSJiLuiV2KaKb7ZKj4jtRISWQvD4-NJa7YQcnjA1Sag48tXbN9--XSf6NkBxEkidGNBxmYKDpoe0uL6KM0WaOnHBM_OVC-x4OUlnD76-vm3SEYtVU0O0zg-Y15E5YxWCZKY5O1A6cQg"/>
+<div class="absolute bottom-0 left-0 right-0 bg-primary text-white text-center text-sm font-bold py-2">
+                            26 ต.ค.
+                         </div>
+</div>
+<h4 class="font-bold text-slate-900 line-clamp-1 group-hover:text-primary">Five Nights At Freddy's</h4>
+<p class="text-xs text-slate-500 mt-1">สยองขวัญ</p>
+</div>
+<!-- CS Card 2 -->
+<div class="min-w-[160px] md:min-w-[200px] snap-start group cursor-pointer">
+<div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 mb-3 shadow-md">
+<img alt="Coming soon movie poster featuring a fast car" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZqV96pBJqse-HMTaNR3gkgw31PQlDZC1nDLjPgwVg2wJdybF-xCh77mS9ZHcuxG5mnbdosykm04kSgv9VTM94mmhDFYUqF6VUd7XpdQqZ2woWWmaTg8LtM7BRrIa2-FPWgCiejZx6UW4s29S8h-J5bRcgynNm5IjvbVsHAHJ-mIw-p1gFuKbO2qRpS07850BfyZKToC_qahKVOjRngpTwxgnQfPq0oAp6cZN7LU8KEgv4dXW9Zinv96ZSq5hLGmXyl7Ud8my9qG4A"/>
+<div class="absolute bottom-0 left-0 right-0 bg-slate-800 text-white text-center text-sm font-bold py-2">
+                            2 พ.ย.
+                         </div>
+</div>
+<h4 class="font-bold text-slate-900 line-clamp-1 group-hover:text-primary">Fast &amp; Furious X Part 2</h4>
+<p class="text-xs text-slate-500 mt-1">แอ็คชัน</p>
+</div>
+<!-- CS Card 3 -->
+<div class="min-w-[160px] md:min-w-[200px] snap-start group cursor-pointer">
+<div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 mb-3 shadow-md">
+<img alt="Coming soon movie poster with romantic sunset" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOyU_6wTYJyFJbd1f9QiOXmxBndT6AzZU39YWlQjdGYAWNZGEtnr5bBUaO6qNKvHXVTmlKeITLad8N2YEDUk81cuSB7XvKyBL9Q4ICj3KkfMpIFemVzFZrvqKPLxgjvEB84Lp4NA6vA7pwu93pcYq0zvRDgLUPQ7UZ9-lrb57lCvUYFjklrbXRz6olokSyUzOv0n2NG4Bv9JrXC3RhfjE_8MdtgvLwgwEjJXkW2xSStPDLLCsmkbXaiiSmk6Daou01xnLrmFUt3c81"/>
+<div class="absolute bottom-0 left-0 right-0 bg-slate-800 text-white text-center text-sm font-bold py-2">
+                            9 พ.ย.
+                         </div>
+</div>
+<h4 class="font-bold text-slate-900 line-clamp-1 group-hover:text-primary">Past Lives</h4>
+<p class="text-xs text-slate-500 mt-1">โรแมนติก / ดราม่า</p>
+</div>
+<!-- CS Card 4 -->
+<div class="min-w-[160px] md:min-w-[200px] snap-start group cursor-pointer">
+<div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 mb-3 shadow-md">
+<img alt="Coming soon movie poster with cartoon characters" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDSjR5liVhPjGih798JMlVvNcyil09W0PGMZwBB9QxW8BEO4Rj2LKmxRscEgKK3aBSKrFp2fZlbs7InGU1gIhigM2Nl0wGi8DZlrXDKT6pD83V6KHwuwK2OaCSqi3PUl6LEuOncT1lDs6ghcTR93mrarIjPP_pfeb5Ml1UPWJtv7f7VCVkNcKED2diLo5ZJiPr4EMQialsKn4-4JZkk-2CfpzS4XpFWPz3vaDGsvIDWoji588BdYXNdjilVvvpn3p1bm8oOJhledzo"/>
+<div class="absolute bottom-0 left-0 right-0 bg-slate-800 text-white text-center text-sm font-bold py-2">
+                            16 พ.ย.
+                         </div>
+</div>
+<h4 class="font-bold text-slate-900 line-clamp-1 group-hover:text-primary">Wish</h4>
+<p class="text-xs text-slate-500 mt-1">แอนิเมชัน</p>
+</div>
+<!-- CS Card 5 -->
+<div class="min-w-[160px] md:min-w-[200px] snap-start group cursor-pointer">
+<div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 mb-3 shadow-md">
+<img alt="Coming soon movie poster abstract art" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnmHSOMdXDnSw4ZTxLgO9ZCUuHWv3HvtCmpT9nWMwLoP3ozk8PyePRKACD55QC88uN000FJbT-5RCZJBXK_d5uYPrIF4JNw32rCMDx7idPw9ijIzGzsvOFUi-mZASFip1hi6lcwfKfo0ert4sN6bwxkaAfWz2-ggx3X5GAIhE-9u1WNV037bGUsV8CzCfFJD_WMEh2myn6cy5YnY8PNsJQfyhEsKHsIrKNmpNbixXVvmcbFArN_UdN30lbWg5h2y0cbNXBz2tIy4H0"/>
+<div class="absolute bottom-0 left-0 right-0 bg-slate-800 text-white text-center text-sm font-bold py-2">
+                            23 พ.ย.
+                         </div>
+</div>
+<h4 class="font-bold text-slate-900 line-clamp-1 group-hover:text-primary">Napoleon</h4>
+<p class="text-xs text-slate-500 mt-1">ชีวประวัติ / สงคราม</p>
+</div>
+<!-- CS Card 6 -->
+<div class="min-w-[160px] md:min-w-[200px] snap-start group cursor-pointer">
+<div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 mb-3 shadow-md">
+<img alt="Coming soon movie poster sci fi art" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0pOJIu2BlWZXMqg9blwb_HX1uLgPgIkcBCL45kE25dURaI2bNP-ty8zqyDKRtwYoHkF-N4nRcwjJYmpGTA4LxZHbGANJRxJtmD3p7_4rYb5zPPOhxxfl8sc3mPIOJ78LOWEgOVuQ_5MAKTsJ_h7I9hDuXgwUDOGAP4qoh1NNPVBfz1V6Q4L0qG37Hs08Wblmym2iB1LiLIc5g11CyPoFoF0QJ4tqGXp2PRPl5c0c5shMwHipDcgyfCG5iTmHI7n3XYQq1jyT6dXtc"/>
+<div class="absolute bottom-0 left-0 right-0 bg-slate-800 text-white text-center text-sm font-bold py-2">
+                            5 ธ.ค.
+                         </div>
+</div>
+<h4 class="font-bold text-slate-900 line-clamp-1 group-hover:text-primary">Aquaman 2</h4>
+<p class="text-xs text-slate-500 mt-1">แอ็คชัน / ไซไฟ</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white border-t border-slate-200 py-12 mt-auto">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+<div>
+<h5 class="font-bold text-slate-900 mb-4">Cinema</h5>
+<ul class="space-y-2 text-sm text-slate-600">
+<li><a class="hover:text-primary" href="about.html">เกี่ยวกับเรา</a></li>
+<li><a class="hover:text-primary" href="careers.html">สมัครงาน</a></li>
+<li><a class="hover:text-primary" href="advertising.html">ติดต่อโฆษณา</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 mb-4">บริการช่วยเหลือ</h5>
+<ul class="space-y-2 text-sm text-slate-600">
+<li><a class="hover:text-primary" href="faq.html">คำถามที่พบบ่อย</a></li>
+<li><a class="hover:text-primary" href="contact.html">ติดต่อเรา</a></li>
+<li><a class="hover:text-primary" href="terms-of-service.html">ข้อตกลงและเงื่อนไข</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 mb-4">ภาพยนตร์</h5>
+<ul class="space-y-2 text-sm text-slate-600">
+<li><a class="hover:text-primary" href="home.html#movie-grid">กำลังฉาย</a></li>
+<li><a class="hover:text-primary" href="home.html#coming-soon">โปรแกรมหน้า</a></li>
+<li><a class="hover:text-primary" href="promotions.html">โปรโมชั่น</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 mb-4">ติดตามเรา</h5>
+<div class="flex gap-4">
+<a class="text-slate-400 hover:text-primary transition" href="https://www.instagram.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">public</span></a>
+<a class="text-slate-400 hover:text-primary transition" href="https://www.facebook.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">thumb_up</span></a>
+<a class="text-slate-400 hover:text-primary transition" href="https://x.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">share</span></a>
+</div>
+</div>
+</div>
+<div class="text-center text-xs text-slate-400 pt-8 border-t border-slate-100">
+                © 2023 Cinema. All rights reserved.
+            </div>
+</div>
+</footer>
+<script src="movies-data.js"></script>
+<script>
+    (() => {
+        const movieGrid = document.getElementById('movie-grid');
+        const moviePagination = document.getElementById('movie-pagination');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('home-search-input');
+        const heroBannerImage = document.getElementById('hero-banner-image');
+        const heroFormatBadge = document.getElementById('hero-format-badge');
+        const heroBannerTitle = document.getElementById('hero-banner-title');
+        const heroBannerDuration = document.getElementById('hero-banner-duration');
+        const heroBannerGenre = document.getElementById('hero-banner-genre');
+        const heroBannerAge = document.getElementById('hero-banner-age');
+        const heroBannerDescription = document.getElementById('hero-banner-description');
+        const heroIndicators = document.getElementById('hero-indicators');
+        const genreAlias = {
+            action: 'แอ็คชัน',
+            adventure: 'ผจญภัย',
+            thriller: 'ระทึกขวัญ',
+            comedy: 'คอมเมดี้',
+            crime: 'อาชญากรรม',
+            animation: 'แอนิเมชัน',
+            drama: 'ดราม่า',
+            fantasy: 'แฟนตาซี',
+            scifi: 'ไซไฟ',
+            'sci-fi': 'ไซไฟ',
+            horror: 'สยองขวัญ'
+        };
+
+        function normalizeGenreLabel(genre) {
+            const normalized = String(genre || '').toLowerCase().replace(/\s+/g, '').trim();
+            return genreAlias[normalized] || genre;
+        }
+
+        function getPoster(movie) {
+            return movie.backdropImage || movie.trailerImage || `https://picsum.photos/seed/${encodeURIComponent(movie.id)}/500/750`;
+        }
+
+        async function hydrateMoviePosters() {
+            const posterEls = Array.from(movieGrid.querySelectorAll('img[data-movie-id]'));
+            await Promise.all(posterEls.map(async (imgEl) => {
+                const movieId = imgEl.getAttribute('data-movie-id');
+                const movie = moviesDatabase[movieId];
+                if (!movie || !window.cinemaMovieImages?.getRealMoviePoster) return;
+                const realPoster = await window.cinemaMovieImages.getRealMoviePoster(movie);
+                if (realPoster) {
+                    imgEl.src = realPoster;
+                }
+            }));
+        }
+
+        const allMovies = Object.values(moviesDatabase).map((movie) => ({
+            ...movie,
+            normalizedGenres: (movie.genres || []).map(normalizeGenreLabel)
+        }));
+
+        const featuredMovieIds = ['death-whisperer-2', 'the-marvels', 'hunger-games'];
+        const featuredMovies = featuredMovieIds
+            .map((id) => allMovies.find((movie) => movie.id === id))
+            .filter(Boolean);
+        let activeGenre = 'all';
+        let activeSearchQuery = '';
+        let activeHeroIndex = 0;
+        let heroTimer = null;
+        let heroImageRequestSeq = 0;
+        let currentPage = 1;
+        const MOVIES_PER_PAGE = 8;
+
+        function canLoadImage(url) {
+            return new Promise((resolve) => {
+                if (!url) {
+                    resolve(false);
+                    return;
+                }
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+
+        async function setHeroBannerImage(movie) {
+            if (!heroBannerImage || !movie?.id) return;
+
+            const requestSeq = ++heroImageRequestSeq;
+            const fallbackHeroImage = `https://picsum.photos/seed/${encodeURIComponent(movie.id)}-hero/1600/900`;
+            const trustedHeroImagesByMovieId = {
+                'death-whisperer-2': 'https://upload.wikimedia.org/wikipedia/en/9/9d/Death_Whisperer_2_poster.jpg',
+                'the-marvels': 'https://upload.wikimedia.org/wikipedia/en/7/74/The_Marvels_poster.jpg',
+                'hunger-games': 'https://upload.wikimedia.org/wikipedia/en/4/42/HungerGamesPoster.jpg'
+            };
+            const isPlaceholderImage = (url) => {
+                const normalized = String(url || '').toLowerCase();
+                return normalized.includes('aida-public') || normalized.includes('picsum.photos');
+            };
+
+            const preferredCandidates = [];
+            const fallbackCandidates = [];
+
+            const trustedImage = trustedHeroImagesByMovieId[movie.id];
+            if (trustedImage) {
+                preferredCandidates.push(trustedImage);
+            }
+
+            if (window.cinemaMovieImages?.getRealMoviePoster) {
+                const realMoviePoster = await window.cinemaMovieImages.getRealMoviePoster(movie);
+                if (realMoviePoster) {
+                    preferredCandidates.push(realMoviePoster);
+                }
+            }
+
+            [movie.backdropImage, movie.trailerImage].filter(Boolean).forEach((imageUrl) => {
+                if (isPlaceholderImage(imageUrl)) {
+                    fallbackCandidates.push(imageUrl);
+                    return;
+                }
+                preferredCandidates.push(imageUrl);
+            });
+
+            const imageCandidates = [...new Set([...preferredCandidates, ...fallbackCandidates])];
+
+            for (const imageUrl of imageCandidates) {
+                const available = await canLoadImage(imageUrl);
+                if (available) {
+                    if (requestSeq !== heroImageRequestSeq) return;
+                    heroBannerImage.src = imageUrl;
+                    heroBannerImage.alt = movie.titleThai || movie.titleEng || 'Hero Movie';
+                    return;
+                }
+            }
+
+            if (requestSeq !== heroImageRequestSeq) return;
+            heroBannerImage.src = fallbackHeroImage;
+            heroBannerImage.alt = movie.titleThai || movie.titleEng || 'Hero Movie';
+        }
+
+        function getMainGenre(movie) {
+            return movie?.normalizedGenres?.[0] || movie?.genres?.[0] || '-';
+        }
+
+        function renderHeroIndicators() {
+            if (!heroIndicators) return;
+            heroIndicators.innerHTML = featuredMovies.map((_, index) => `
+                <button class="hero-indicator w-2.5 h-2.5 rounded-full transition-colors ${index === activeHeroIndex ? 'bg-white' : 'bg-white/40 hover:bg-white'}" data-index="${index}" type="button"></button>
+            `).join('');
+
+            heroIndicators.querySelectorAll('.hero-indicator').forEach((indicator) => {
+                indicator.addEventListener('click', () => {
+                    const nextIndex = Number(indicator.getAttribute('data-index'));
+                    if (Number.isNaN(nextIndex)) return;
+                    updateHeroBanner(nextIndex);
+                    startHeroAutoplay();
+                });
+            });
+        }
+
+        function updateHeroBanner(index) {
+            if (!featuredMovies.length) return;
+            activeHeroIndex = (index + featuredMovies.length) % featuredMovies.length;
+            const movie = featuredMovies[activeHeroIndex];
+            if (!movie) return;
+
+            setHeroBannerImage(movie);
+            if (heroFormatBadge) {
+                heroFormatBadge.textContent = movie.showtimes?.[0]?.systems?.[0]?.format || '2D';
+            }
+            if (heroBannerTitle) {
+                heroBannerTitle.textContent = `${movie.titleThai} (${movie.titleEng})`;
+            }
+            if (heroBannerDuration) {
+                heroBannerDuration.innerHTML = `<span class="material-symbols-outlined text-lg">schedule</span> ${movie.duration || '-'}`;
+            }
+            if (heroBannerGenre) {
+                heroBannerGenre.textContent = getMainGenre(movie);
+            }
+            if (heroBannerAge) {
+                heroBannerAge.textContent = movie.ageLimit || 'G';
+            }
+            if (heroBannerDescription) {
+                heroBannerDescription.textContent = movie.description || '';
+            }
+
+            renderHeroIndicators();
+        }
+
+        function startHeroAutoplay() {
+            if (heroTimer) {
+                clearInterval(heroTimer);
+            }
+            if (featuredMovies.length <= 1) return;
+            heroTimer = setInterval(() => {
+                updateHeroBanner(activeHeroIndex + 1);
+            }, 5000);
+        }
+
+        function getDefaultShowtime(movieId) {
+            const movie = moviesDatabase[movieId];
+            if (!movie || !movie.showtimes || movie.showtimes.length === 0) return null;
+            const cinema = movie.showtimes[0];
+            const system = cinema.systems[0];
+            const time = system.times[0];
+            const showtimeId = `st-${movieId}-${time.time.replace(':', '')}-${time.hall.toLowerCase().replace(/\s+/g, '-')}`;
+            return {
+                movieId,
+                time: time.time,
+                hall: time.hall,
+                showtimeId
+            };
+        }
+
+        function bindMovieCardEvents() {
+            document.querySelectorAll('.movie-card').forEach((card) => {
+                const movieId = card.getAttribute('data-movie-id');
+
+                card.addEventListener('click', () => {
+                    window.location.href = `movie-details.html?id=${movieId}`;
+                });
+
+                const buyBtn = card.querySelector('.buy-ticket-btn');
+                if (buyBtn) {
+                    buyBtn.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        window.authModule.requireLogin(() => {
+                            const showtime = getDefaultShowtime(movieId);
+                            if (!showtime) {
+                                alert('ไม่พบข้อมูลรอบฉายสำหรับหนังเรื่องนี้');
+                                return;
+                            }
+                            sessionStorage.setItem('selectedMovieId', showtime.movieId);
+                            sessionStorage.setItem('selectedTime', showtime.time);
+                            sessionStorage.setItem('selectedHall', showtime.hall);
+                            window.location.href = `seat-selection.html?showtimeId=${encodeURIComponent(showtime.showtimeId)}`;
+                        });
+                    });
+                }
+            });
+        }
+
+        function renderPagination(totalPages) {
+            if (!moviePagination) return;
+            if (totalPages <= 1) {
+                moviePagination.innerHTML = '';
+                return;
+            }
+
+            const pageButtons = Array.from({ length: totalPages }, (_value, index) => {
+                const pageNumber = index + 1;
+                const activeClass = pageNumber === currentPage
+                    ? 'bg-slate-900 text-white'
+                    : 'bg-background-light text-slate-700 hover:bg-slate-200';
+                return `<button class="page-btn px-3 py-2 rounded-lg text-sm font-bold transition ${activeClass}" data-page="${pageNumber}" type="button">${pageNumber}</button>`;
+            }).join('');
+
+            moviePagination.innerHTML = `
+                <div class="flex items-center justify-center gap-2 w-full flex-wrap">
+                    <button class="prev-btn px-4 py-2 rounded-lg text-sm font-bold transition ${currentPage <= 1 ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-background-light text-slate-700 hover:bg-slate-200'}" type="button" ${currentPage <= 1 ? 'disabled' : ''}>ก่อนหน้า</button>
+                    <div class="hidden sm:flex items-center gap-2">${pageButtons}</div>
+                    <span class="sm:hidden text-sm font-semibold text-slate-600">หน้า ${currentPage} / ${totalPages}</span>
+                    <button class="next-btn px-4 py-2 rounded-lg text-sm font-bold transition ${currentPage >= totalPages ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-background-light text-slate-700 hover:bg-slate-200'}" type="button" ${currentPage >= totalPages ? 'disabled' : ''}>ถัดไป</button>
+                </div>
+            `;
+
+            const prevBtn = moviePagination.querySelector('.prev-btn');
+            const nextBtn = moviePagination.querySelector('.next-btn');
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    if (currentPage <= 1) return;
+                    renderMovieGrid(activeGenre, activeSearchQuery, currentPage - 1);
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    if (currentPage >= totalPages) return;
+                    renderMovieGrid(activeGenre, activeSearchQuery, currentPage + 1);
+                });
+            }
+
+            moviePagination.querySelectorAll('.page-btn').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const targetPage = Number(btn.getAttribute('data-page'));
+                    if (Number.isNaN(targetPage)) return;
+                    renderMovieGrid(activeGenre, activeSearchQuery, targetPage);
+                });
+            });
+        }
+
+        function renderMovieGrid(selectedGenre = activeGenre, query = activeSearchQuery, targetPage = currentPage) {
+            activeGenre = selectedGenre;
+            activeSearchQuery = String(query || '').trim().toLowerCase();
+
+            const byGenre = selectedGenre === 'all'
+                ? allMovies
+                : allMovies.filter((movie) => movie.normalizedGenres.includes(selectedGenre));
+
+            const moviesToShow = activeSearchQuery
+                ? byGenre.filter((movie) => {
+                    const cinemaNames = (movie.showtimes || []).map((cinema) => cinema.cinema).join(' ');
+                    const searchableText = [
+                        movie.titleThai,
+                        movie.titleEng,
+                        ...(movie.normalizedGenres || []),
+                        ...(movie.genres || []),
+                        cinemaNames
+                    ].join(' ').toLowerCase();
+                    return searchableText.includes(activeSearchQuery);
+                })
+                : byGenre;
+
+            const totalPages = Math.max(1, Math.ceil(moviesToShow.length / MOVIES_PER_PAGE));
+            currentPage = Math.min(Math.max(Number(targetPage) || 1, 1), totalPages);
+            const startIndex = (currentPage - 1) * MOVIES_PER_PAGE;
+            const pagedMovies = moviesToShow.slice(startIndex, startIndex + MOVIES_PER_PAGE);
+
+            if (!moviesToShow.length) {
+                movieGrid.innerHTML = `
+                    <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500">
+                        ไม่พบผลลัพธ์สำหรับ "${query}"
+                    </div>
+                `;
+                renderPagination(0);
+                return;
+            }
+
+            movieGrid.innerHTML = pagedMovies.map((movie) => `
+                <div class="group flex flex-col gap-3 movie-card cursor-pointer" data-movie-id="${movie.id}">
+                    <div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+                        <img alt="${movie.titleThai}" class="w-full h-full object-cover" data-movie-id="${movie.id}" src="${getPoster(movie)}" onerror="this.onerror=null;this.src='https://picsum.photos/seed/${encodeURIComponent(movie.id)}-fallback/500/750';" />
+                        <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded">${movie.showtimes?.[0]?.systems?.[0]?.format || '2D'}</div>
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="buy-ticket-btn bg-primary text-white px-6 py-2 rounded-full font-bold shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">ซื้อตั๋ว</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg truncate group-hover:text-primary transition-colors">${movie.titleThai}</h3>
+                        <div class="flex items-center justify-between mt-1 text-sm text-slate-500">
+                            <span>${movie.duration}</span>
+                            <span class="border border-slate-300 text-xs px-1 rounded">${movie.ageLimit || 'G'}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1 truncate">${movie.normalizedGenres.join(' • ')}</p>
+                        <div class="mt-2 flex items-center gap-1 text-yellow-500 text-sm font-medium">
+                            <span class="material-symbols-outlined text-base fill-current">star</span>
+                            <span>${movie.rating}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            bindMovieCardEvents();
+            hydrateMoviePosters();
+            renderPagination(totalPages);
+        }
+
+        const heroBookBtn = document.getElementById('hero-book-btn');
+        const heroTrailerBtn = document.getElementById('hero-trailer-btn');
+        if (heroBookBtn) {
+            heroBookBtn.addEventListener('click', () => {
+                const currentMovie = featuredMovies[activeHeroIndex];
+                if (!currentMovie) return;
+                window.location.href = `movie-details.html?id=${encodeURIComponent(currentMovie.id)}`;
+            });
+        }
+
+        if (heroTrailerBtn) {
+            heroTrailerBtn.addEventListener('click', () => {
+                const currentMovie = featuredMovies[activeHeroIndex];
+                if (!currentMovie) return;
+                window.location.href = `movie-details.html?id=${encodeURIComponent(currentMovie.id)}`;
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', (event) => {
+                renderMovieGrid(activeGenre, event.target.value, 1);
+            });
+        }
+
+        filterBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const selectedGenre = btn.getAttribute('data-genre');
+                filterBtns.forEach((b) => {
+                    b.classList.remove('bg-slate-900', 'text-white');
+                    b.classList.add('bg-background-light', 'text-slate-600');
+                });
+                btn.classList.remove('bg-background-light', 'text-slate-600');
+                btn.classList.add('bg-slate-900', 'text-white');
+                renderMovieGrid(selectedGenre, searchInput?.value || '', 1);
+            });
+        });
+
+        updateHeroBanner(0);
+        startHeroAutoplay();
+        renderMovieGrid('all', '', 1);
+    })();
+</script>
+
+<!-- Login Modal Backdrop & Container -->
+<div id="auth-backdrop" class="fixed inset-0 bg-black/0 backdrop-blur-0 transition-all duration-300 z-40 hidden" style="pointer-events: none;"></div>
+
+<!-- Login/Signup Modal -->
+<div id="auth-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 overflow-hidden">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white" id="modal-title">เข้าสู่ระบบ</h2>
+            <button id="modal-close-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="p-6">
+            <!-- Tab Buttons -->
+            <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-700 p-1 rounded-lg">
+                <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-login active bg-white dark:bg-slate-600 text-slate-900 dark:text-white" data-tab="login">
+                    เข้าสู่ระบบ
+                </button>
+                <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-signup text-slate-600 dark:text-slate-300" data-tab="signup">
+                    สร้างบัญชี
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                    <input id="login-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                    <input id="login-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                    เข้าสู่ระบบ
+                </button>
+                <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="login-error"></p>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ชื่อเล่น</label>
+                    <input id="signup-nickname" type="text" placeholder="ชื่อของคุณ" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                    <input id="signup-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                    <input id="signup-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ยืนยันรหัสผ่าน</label>
+                    <input id="signup-confirm-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                    สร้างบัญชี
+                </button>
+                <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="signup-error"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- User Profile Menu -->
+<div id="profile-menu" class="absolute top-20 right-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg hidden z-40 min-w-48">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-900 dark:text-white" id="user-name">ผู้ใช้</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400" id="user-email">email@example.com</p>
+    </div>
+    <button id="logout-btn" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">logout</span>
+        ออกจากระบบ
+    </button>
+</div>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
+    import { getAnalytics, isSupported } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js';
+    import { initializeAuthUI } from './auth.js';
+
+    const firebaseConfig = {
+        apiKey: 'AIzaSyC0I4lXYHrxh1543AF1NZcdAYulS2jbftM',
+        authDomain: 'frame-4e170.firebaseapp.com',
+        projectId: 'frame-4e170',
+        storageBucket: 'frame-4e170.firebasestorage.app',
+        messagingSenderId: '585102075629',
+        appId: '1:585102075629:web:f5c9d3e3745b8a35570ee4',
+        measurementId: 'G-0TCR1Y4LP2'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    isSupported().then((supported) => {
+        if (supported) {
+            getAnalytics(app);
+        }
+    }).catch(() => {});
+
+    // Initialize Auth UI
+    initializeAuthUI(app, firebaseConfig);
+</script>
+</body></html>

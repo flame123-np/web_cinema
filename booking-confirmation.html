@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Booking Confirmation - CinemaOne</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=Noto+Sans+Thai:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="movies-data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e9508c",
+                        "primary-hover": "#d13d75",
+                        "background-light": "#fbf8fa",
+                        "background-dark": "#211117",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d1b22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans Thai", "sans-serif"],
+                        "body": ["Inter", "Noto Sans Thai", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+        }
+        .ticket-tear-line {
+            background-image: radial-gradient(circle at 10px 10px, transparent 8px, #fbf8fa 9px);
+            background-size: 20px 20px;
+            background-position: -10px -10px;
+        }
+        /* Custom jagged edge for ticket bottom if needed, using simple css for now */
+        .jagged-edge {
+            background: linear-gradient(-45deg, transparent 8px, transparent 0), linear-gradient(45deg, transparent 8px, transparent 0);
+            background-size: 16px 16px;
+            background-repeat: repeat-x;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-900 min-h-screen flex flex-col font-body">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-primary/10 bg-background-light/95 backdrop-blur-md px-4 py-3 lg:px-10">
+<a class="text-slate-900 text-xl font-bold leading-tight tracking-[-0.015em]" href="home.html">Cinema</a>
+<!-- Desktop Nav -->
+<div class="hidden lg:flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-slate-900 hover:text-primary transition-colors text-sm font-medium leading-normal" href="home.html">หน้าแรก</a>
+<a class="text-slate-900 hover:text-primary transition-colors text-sm font-medium leading-normal" href="movies.html">ภาพยนตร์</a>
+<a class="text-slate-900 hover:text-primary transition-colors text-sm font-medium leading-normal" href="cinemas.html">โรงภาพยนตร์</a>
+<a class="text-slate-900 hover:text-primary transition-colors text-sm font-medium leading-normal" href="promotions.html">โปรโมชั่น</a>
+</nav>
+<div class="flex items-center gap-3">
+<div class="hidden sm:flex items-center bg-background-light rounded-full px-4 py-1.5 border border-slate-200">
+<span class="material-symbols-outlined text-primary text-lg mr-2">stars</span>
+<span id="member-points" class="text-sm font-bold text-slate-800">0 คะแนน</span>
+</div>
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 transition overflow-hidden" id="profile-btn">
+<img alt="User Profile" class="w-full h-full object-cover" id="profile-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6q4FeHiQsMOkQmj95z4EzvVinKOtDV4QriFwJ-QOyxBuFStWbd8c0kj_D_uLRJ6mhM4F3cUHWJ5GRhfSXKrdY-VgnmwK5KrBS7imj4IS7ivi2TmK3w21WLLX4ogiMYQ3aNu1eHT36wlkALUffpQrsaUjif3sNoiT9SS6WHYMUr1HC1HnTWl4PxzYESchpE7NgSo7ELYMd4tPUeUjFSgwGChFzQ7Y6-YZaiuz_wrMBFptDjh4ZutyumxzRzrIQDT0m99Epmo1T99h0"/>
+</button>
+</div>
+</div>
+<!-- Mobile Menu Icon -->
+<div class="lg:hidden flex items-center">
+<button class="text-slate-900 p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="flex-grow container mx-auto px-4 py-8 lg:px-8 lg:py-12 max-w-7xl">
+<!-- Success Banner -->
+<div class="flex flex-col items-center justify-center text-center mb-10 animate-fade-in-up">
+<div class="h-20 w-20 rounded-full bg-green-100 flex items-center justify-center mb-6 shadow-sm border border-green-200">
+<span class="material-symbols-outlined text-5xl text-green-600">check_circle</span>
+</div>
+<h1 class="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-2">การจองสำเร็จ!</h1>
+<p class="text-slate-500 text-lg">ขอบคุณที่เลือกชมภาพยนตร์กับ CinemaOne ขอให้สนุกกับการรับชมครับ</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+<!-- Left Column: The E-Ticket -->
+<div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+<!-- Ticket Card Container -->
+<div id="ticket-card" class="relative bg-surface-light rounded-2xl shadow-xl overflow-hidden border border-slate-200 flex flex-col md:flex-row">
+<!-- Movie Poster Section (Left/Top) -->
+<div class="w-full md:w-1/3 bg-slate-900 relative">
+<img alt="Movie Poster Avatar" class="w-full h-64 md:h-full object-cover opacity-80" data-alt="Abstract cinematic blue lighting representing a movie scene" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpk6EXzej-BZgz0oKODINWSyHQyYa8sdqkEvSJGYsSn9CMyTNg42k74idNKABxrIO_Mj4pPTh4oBy6grAWSFiR5ypqkQYt60gFozBBcw-aaRRixzXfMy35oQcXdaFXHkPdTiD99WDVk6PFSnCvRwbiAoD7aRWxbK75_qrTA7pYLKTlhgfYw75A8xik-UAWKotGWwRVvYh-cskBesrMFpwn78ygb65APb-2wqCp4hBlQ5M_bYbwnOlZtSYiGA3XZV28qAueID2E5Hqy"/>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<span class="inline-block px-2 py-0.5 rounded bg-primary text-xs font-bold mb-2">IMAX 3D</span>
+<h3 class="text-xl font-bold leading-tight drop-shadow-md" id="ticket-movie-title">Avatar: The Way of Water</h3>
+<p class="text-slate-300 text-sm mt-1">2 ชม. 42 นาที • Action, Sci-Fi</p>
+</div>
+</div>
+<!-- Ticket Details Section (Middle) -->
+<div class="flex-1 p-6 md:p-8 flex flex-col justify-between relative bg-surface-light">
+<!-- Perforation dots (Visual only for desktop) -->
+<div class="absolute right-0 top-0 bottom-0 w-[1px] border-r-2 border-dashed border-slate-200 hidden md:block transform translate-x-1/2"></div>
+<!-- Semi-circles for ticket effect -->
+<div class="absolute right-0 top-[-10px] w-5 h-5 bg-background-light rounded-full transform translate-x-1/2 md:block hidden shadow-inner border-b border-slate-200"></div>
+<div class="absolute right-0 bottom-[-10px] w-5 h-5 bg-background-light rounded-full transform translate-x-1/2 md:block hidden shadow-inner border-t border-slate-200"></div>
+<div class="grid grid-cols-2 gap-y-6 gap-x-4">
+<div class="col-span-2">
+<p class="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">โรงภาพยนตร์</p>
+<p class="text-slate-900 font-bold text-lg" id="ticket-cinema">Paragon Cineplex</p>
+<p class="text-slate-500 text-sm" id="ticket-hall">Hall 4 • 4DX System</p>
+</div>
+<div>
+<p class="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">วันที่</p>
+<p class="text-slate-900 font-semibold text-base" id="ticket-date">14 ต.ค. 2023</p>
+</div>
+<div>
+<p class="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">เวลา</p>
+<p class="text-slate-900 font-semibold text-base" id="ticket-time">19:30 น.</p>
+</div>
+<div class="col-span-2 bg-slate-50 rounded-lg p-3 border border-slate-100">
+<p class="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">ที่นั่งของคุณ</p>
+<div class="flex gap-2" id="ticket-seats-list">
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-md bg-slate-900 text-white font-bold text-lg shadow-sm">F12</span>
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-md bg-slate-900 text-white font-bold text-lg shadow-sm">F13</span>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-dashed border-slate-200 flex justify-between items-end">
+<div>
+<p class="text-slate-400 text-xs">Booking ID</p>
+<p class="text-primary font-mono font-bold text-lg tracking-wider" id="ticket-booking-id">BK-882910</p>
+</div>
+<div class="md:hidden">
+<!-- Mobile QR Placeholder indicator -->
+<span class="text-xs text-slate-400 flex items-center gap-1">
+                                    QR Code ด้านล่าง <span class="material-symbols-outlined text-sm">arrow_downward</span>
+</span>
+</div>
+</div>
+</div>
+<!-- QR Code Section (Right/Bottom) -->
+<div class="w-full md:w-48 bg-slate-50 border-l border-dashed border-slate-200 flex flex-col items-center justify-center p-6 gap-3">
+<div class="bg-white p-2 rounded-lg shadow-sm border border-slate-100">
+<!-- QR Code SVG -->
+<svg class="w-28 h-28 text-slate-900" viewbox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+<rect fill="white" height="256" width="256"></rect>
+<path d="M48 48h48v48h-48zM120 48h48v48h-48zM184 48h32v32h-32zM48 112h32v32h-32zM120 112h32v32h-32zM184 112h48v48h-48zM48 176h48v48h-48zM120 176h32v32h-32zM184 192h32v32h-32z" fill="currentColor"></path>
+<path d="M80 80h16v16h-16zM152 80h16v16h-16zM216 80h16v16h-16zM80 144h16v16h-16zM152 144h16v16h-16z" fill="currentColor"></path>
+<rect fill="none" height="80" stroke="currentColor" stroke-width="8" width="80" x="30" y="30"></rect>
+<rect fill="none" height="70" stroke="currentColor" stroke-width="8" width="70" x="156" y="30"></rect>
+<rect fill="none" height="80" stroke="currentColor" stroke-width="8" width="80" x="30" y="156"></rect>
+</svg>
+</div>
+<p class="text-xs text-slate-500 text-center leading-tight">สแกนที่หน้าโรงภาพยนตร์เพื่อเข้าชม</p>
+</div>
+</div>
+<!-- Loyalty Banner -->
+<div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-6 shadow-lg text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 rounded-full bg-yellow-400 flex items-center justify-center text-slate-900 shadow-lg shadow-yellow-400/20">
+<span class="material-symbols-outlined text-2xl">star</span>
+</div>
+<div>
+<h3 class="font-bold text-lg text-yellow-400" id="loyalty-earned">คุณได้รับ 50 คะแนน!</h3>
+<p class="text-slate-300 text-sm" id="loyalty-total">จากการจองรอบนี้ (ยอดรวม 0 คะแนน)</p>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+<button id="save-ticket-btn" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-primary/30 transform hover:-translate-y-0.5">
+<span class="material-symbols-outlined">download</span>
+<span>บันทึกเป็นรูปภาพ</span>
+</button>
+<button id="share-ticket-btn" class="flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 font-bold py-3.5 px-6 rounded-xl border border-slate-200 transition-all shadow-sm transform hover:-translate-y-0.5">
+<span class="material-symbols-outlined">share</span>
+<span>แชร์ตั๋ว</span>
+</button>
+</div>
+</div>
+<!-- Right Column: Summary & Info -->
+<div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
+<!-- Transaction Summary -->
+<div class="bg-surface-light rounded-2xl shadow-sm border border-slate-200 p-6">
+<h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">receipt_long</span>
+                        สรุปรายการ
+                    </h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-slate-500" id="summary-ticket-count">ตั๋วภาพยนตร์ (x2)</span>
+<span class="text-slate-900 font-medium" id="summary-seat-subtotal">500 บาท</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-slate-500">ค่าธรรมเนียมบริการ</span>
+<span class="text-slate-900 font-medium" id="summary-service-fee">20 บาท</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-slate-500">ส่วนลดสมาชิก</span>
+<span class="text-green-600 font-medium" id="summary-discount">-50 บาท</span>
+</div>
+<div class="h-px bg-slate-100 my-2"></div>
+<div class="flex justify-between items-center">
+<span class="text-slate-900 font-bold">ยอดสุทธิ</span>
+<span class="text-primary font-black text-xl" id="summary-total">470 บาท</span>
+</div>
+<div class="flex justify-between items-center text-xs text-slate-400 mt-1">
+<span id="summary-payment-method">ชำระผ่าน Credit Card</span>
+<span id="summary-card-last4">**** 4242</span>
+</div>
+</div>
+</div>
+<!-- Next Steps / Instructions -->
+<div class="bg-surface-light rounded-2xl shadow-sm border border-slate-200 p-6">
+<h3 class="text-lg font-bold text-slate-900 mb-4">สิ่งที่ควรทราบ</h3>
+<ul class="space-y-4">
+<li class="flex gap-3 items-start">
+<div class="mt-0.5 bg-slate-100 p-1 rounded-full">
+<span class="material-symbols-outlined text-slate-500 text-sm">directions_walk</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-900">ไปที่ทางเข้าโรงภาพยนตร์ได้เลย</p>
+<p class="text-xs text-slate-500 mt-0.5">ไม่ต้องแลกตั๋วกระดาษ ใช้ QR Code สแกนได้ทันที</p>
+</div>
+</li>
+<li class="flex gap-3 items-start">
+<div class="mt-0.5 bg-slate-100 p-1 rounded-full">
+<span class="material-symbols-outlined text-slate-500 text-sm">fastfood</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-900">รับป๊อปคอร์นที่จุด Concession</p>
+<p class="text-xs text-slate-500 mt-0.5">แสดงรหัสสมาชิกเพื่อสะสมแต้มเพิ่มเติม</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Support -->
+<div class="text-center p-4">
+<p class="text-sm text-slate-400">ติดปัญหาการจอง? <a class="text-primary hover:underline font-medium" href="tel:+6620299999">ติดต่อฝ่ายบริการลูกค้า</a></p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="border-t border-slate-200 bg-surface-light py-8 mt-auto">
+<div class="container mx-auto px-4 lg:px-10 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2 text-slate-400">
+<span class="material-symbols-outlined">copyright</span>
+<span class="text-sm">2023 CinemaOne. All rights reserved.</span>
+</div>
+<div class="flex gap-6">
+<a class="text-slate-500 hover:text-primary transition-colors text-sm" href="terms-of-service.html">เงื่อนไขการใช้งาน</a>
+<a class="text-slate-500 hover:text-primary transition-colors text-sm" href="privacy-policy.html">นโยบายความเป็นส่วนตัว</a>
+</div>
+</div>
+</footer>
+<script>
+    (() => {
+        const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const API_BASE = window.location.protocol === 'file:' || (isLocalHost && window.location.port !== '4316')
+            ? 'http://localhost:4316'
+            : '';
+        const params = new URLSearchParams(window.location.search);
+        const bookingId = params.get('bookingId') || localStorage.getItem('cinema.latestBookingId');
+
+        if (!bookingId) {
+            window.location.href = 'home.html';
+            return;
+        }
+
+        const movieTitle = document.getElementById('ticket-movie-title');
+        const ticketPoster = document.querySelector('#ticket-card img[alt="Movie Poster Avatar"]');
+        const cinemaEl = document.getElementById('ticket-cinema');
+        const hallEl = document.getElementById('ticket-hall');
+        const dateEl = document.getElementById('ticket-date');
+        const timeEl = document.getElementById('ticket-time');
+        const seatsListEl = document.getElementById('ticket-seats-list');
+        const bookingIdEl = document.getElementById('ticket-booking-id');
+
+        const ticketCountEl = document.getElementById('summary-ticket-count');
+        const seatSubtotalEl = document.getElementById('summary-seat-subtotal');
+        const serviceFeeEl = document.getElementById('summary-service-fee');
+        const discountEl = document.getElementById('summary-discount');
+        const totalEl = document.getElementById('summary-total');
+        const paymentMethodEl = document.getElementById('summary-payment-method');
+        const cardLast4El = document.getElementById('summary-card-last4');
+        const loyaltyEarnedEl = document.getElementById('loyalty-earned');
+        const loyaltyTotalEl = document.getElementById('loyalty-total');
+        const saveTicketBtn = document.getElementById('save-ticket-btn');
+        const shareTicketBtn = document.getElementById('share-ticket-btn');
+        const ticketCard = document.getElementById('ticket-card');
+        let currentBooking = null;
+
+        function formatBaht(value) {
+            return `${Number(value).toLocaleString('th-TH')} บาท`;
+        }
+
+        function findMovieIdByTitle(title) {
+            if (!title || typeof moviesDatabase === 'undefined') return null;
+            const normalized = String(title).trim().toLowerCase();
+            const entry = Object.values(moviesDatabase).find((movieItem) => {
+                const thai = String(movieItem.titleThai || '').trim().toLowerCase();
+                const eng = String(movieItem.titleEng || '').trim().toLowerCase();
+                return thai === normalized || eng === normalized;
+            });
+            return entry?.id || null;
+        }
+
+        function getMovieRef(bookingMovie, bookingShowtime) {
+            if (typeof moviesDatabase === 'undefined') return null;
+            const movieId = bookingShowtime?.movieId || bookingMovie?.id || findMovieIdByTitle(bookingMovie?.title);
+            return movieId ? moviesDatabase[movieId] : null;
+        }
+
+        fetch(`${API_BASE}/api/bookings/${encodeURIComponent(bookingId)}`)
+            .then((response) => {
+                if (!response.ok) throw new Error('not found');
+                return response.json();
+            })
+            .then(async (booking) => {
+                currentBooking = booking;
+                movieTitle.textContent = booking.movie.title;
+                cinemaEl.textContent = booking.movie.cinema;
+                hallEl.textContent = booking.movie.hall;
+                dateEl.textContent = booking.showtime.dateLabel;
+                timeEl.textContent = `${booking.showtime.startTime} น.`;
+                bookingIdEl.textContent = booking.bookingId;
+
+                seatsListEl.innerHTML = booking.seats.map((seatCode) => (
+                    `<span class="inline-flex items-center justify-center px-3 py-1 rounded-md bg-slate-900 text-white font-bold text-lg shadow-sm">${seatCode}</span>`
+                )).join('');
+
+                ticketCountEl.textContent = `ตั๋วภาพยนตร์ (x${booking.seats.length})`;
+                seatSubtotalEl.textContent = formatBaht(booking.pricing.seatSubtotal);
+                serviceFeeEl.textContent = formatBaht(booking.pricing.serviceFee);
+                discountEl.textContent = `-${formatBaht(booking.pricing.discount)}`;
+                totalEl.textContent = formatBaht(booking.pricing.total);
+                paymentMethodEl.textContent = booking.payment.method === 'credit-card' ? 'ชำระผ่าน Credit Card' : 'ชำระเงินออนไลน์';
+                cardLast4El.textContent = `**** ${booking.payment.cardLast4}`;
+
+                const movieRef = getMovieRef(booking.movie, booking.showtime);
+                if (ticketPoster) {
+                    ticketPoster.src = (movieRef?.backdropImage || movieRef?.trailerImage || booking.movie?.poster || ticketPoster.src);
+                    ticketPoster.alt = `Poster for ${booking.movie.title}`;
+
+                    if (movieRef && window.cinemaMovieImages?.getRealMoviePoster) {
+                        try {
+                            const realPoster = await window.cinemaMovieImages.getRealMoviePoster(movieRef);
+                            if (realPoster) ticketPoster.src = realPoster;
+                        } catch (_error) {
+                        }
+                    }
+                }
+
+                const earnedPoints = booking.loyalty?.earnedPoints ?? 0;
+                loyaltyEarnedEl.textContent = `คุณได้รับ ${earnedPoints} คะแนน!`;
+
+                let totalPoints = booking.loyalty?.balanceAfterBooking;
+                if (!Number.isFinite(Number(totalPoints)) && booking.uid) {
+                    try {
+                        const userResponse = await fetch(`${API_BASE}/api/users/${encodeURIComponent(booking.uid)}`);
+                        if (userResponse.ok) {
+                            const userData = await userResponse.json();
+                            totalPoints = userData.loyaltyPoints;
+                        }
+                    } catch (_error) {
+                    }
+                }
+
+                if (Number.isFinite(Number(totalPoints))) {
+                    loyaltyTotalEl.textContent = `จากการจองรอบนี้ (ยอดรวม ${Number(totalPoints).toLocaleString('th-TH')} คะแนน)`;
+                } else {
+                    loyaltyTotalEl.textContent = 'จากการจองรอบนี้';
+                }
+            })
+            .catch(() => {
+                alert('ไม่พบข้อมูลการจองนี้');
+                window.location.href = 'home.html';
+            });
+
+        if (saveTicketBtn) {
+            saveTicketBtn.addEventListener('click', async () => {
+                if (!ticketCard) return;
+                try {
+                    const canvas = await html2canvas(ticketCard, { scale: 2, backgroundColor: '#ffffff' });
+                    const link = document.createElement('a');
+                    link.download = `ticket-${bookingId}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } catch (_error) {
+                    alert('ไม่สามารถบันทึกตั๋วเป็นรูปได้ในขณะนี้');
+                }
+            });
+        }
+
+        if (shareTicketBtn) {
+            shareTicketBtn.addEventListener('click', async () => {
+                const shareText = currentBooking
+                    ? `ตั๋วหนัง ${currentBooking.movie.title} เวลา ${currentBooking.showtime.startTime} น. ที่นั่ง ${currentBooking.seats.join(', ')}`
+                    : `ตั๋วหนัง Booking ID: ${bookingId}`;
+
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'Cinema Ticket',
+                            text: shareText,
+                            url: window.location.href
+                        });
+                        return;
+                    } catch (_error) {
+                    }
+                }
+
+                try {
+                    await navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
+                    alert('คัดลอกลิงก์ตั๋วแล้ว');
+                } catch (_error) {
+                    alert('ไม่สามารถแชร์ตั๋วได้ในขณะนี้');
+                }
+            });
+        }
+    })();
+</script>
+
+<!-- Login Modal Backdrop & Container -->
+<div id="auth-backdrop" class="fixed inset-0 bg-black/0 backdrop-blur-0 transition-all duration-300 z-40 hidden" style="pointer-events: none;"></div>
+
+<!-- Login/Signup Modal -->
+<div id="auth-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 overflow-hidden">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white" id="modal-title">เข้าสู่ระบบ</h2>
+            <button id="modal-close-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="p-6">
+            <!-- Tab Buttons -->
+            <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-700 p-1 rounded-lg">
+                <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-login active bg-white dark:bg-slate-600 text-slate-900 dark:text-white" data-tab="login">
+                    เข้าสู่ระบบ
+                </button>
+                <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-signup text-slate-600 dark:text-slate-300" data-tab="signup">
+                    สร้างบัญชี
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                    <input id="login-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                    <input id="login-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                    เข้าสู่ระบบ
+                </button>
+                <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="login-error"></p>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ชื่อเล่น</label>
+                    <input id="signup-nickname" type="text" placeholder="ชื่อของคุณ" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                    <input id="signup-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                    <input id="signup-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ยืนยันรหัสผ่าน</label>
+                    <input id="signup-confirm-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                    สร้างบัญชี
+                </button>
+                <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="signup-error"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- User Profile Menu -->
+<div id="profile-menu" class="absolute top-20 right-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg hidden z-40 min-w-48">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-900 dark:text-white" id="user-name">ผู้ใช้</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400" id="user-email">email@example.com</p>
+    </div>
+    <button id="logout-btn" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">logout</span>
+        ออกจากระบบ
+    </button>
+</div>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
+    import { initializeAuthUI } from './auth.js';
+
+    const firebaseConfig = {
+        apiKey: 'AIzaSyC0I4lXYHrxh1543AF1NZcdAYulS2jbftM',
+        authDomain: 'frame-4e170.firebaseapp.com',
+        projectId: 'frame-4e170',
+        storageBucket: 'frame-4e170.firebasestorage.app',
+        messagingSenderId: '585102075629',
+        appId: '1:585102075629:web:f5c9d3e3745b8a35570ee4',
+        measurementId: 'G-0TCR1Y4LP2'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    initializeAuthUI(app, firebaseConfig);
+</script>
+</body></html>

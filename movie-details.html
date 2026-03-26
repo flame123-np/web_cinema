@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title id="page-title">Movie Details - Major Cineplex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Noto+Sans+Thai:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="movies-data.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#e9508c",
+                "primary-dark": "#d13675",
+                "background-light": "#f8f6f7",
+                "background-dark": "#211117",
+                "surface": "#ffffff",
+              },
+              fontFamily: {
+                "display": ["Inter", "Noto Sans Thai", "sans-serif"],
+                "body": ["Inter", "Noto Sans Thai", "sans-serif"],
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+      </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-900 min-h-screen flex flex-col font-display antialiased">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a class="text-xl font-bold tracking-tight text-slate-900" href="home.html">Cinema</a>
+                <nav class="hidden md:flex gap-8">
+                    <a class="text-sm font-medium text-slate-900 hover:text-primary transition-colors" href="home.html">หน้าแรก</a>
+                    <a class="text-sm font-medium text-slate-500 hover:text-primary transition-colors" href="movies.html">ภาพยนตร์</a>
+                    <a class="text-sm font-medium text-slate-500 hover:text-primary transition-colors" href="cinemas.html">โรงภาพยนตร์</a>
+                    <a class="text-sm font-medium text-slate-500 hover:text-primary transition-colors" href="promotions.html">โปรโมชั่น</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <button id="profile-btn" class="bg-primary hover:bg-primary-dark text-white text-sm font-bold py-2 px-6 rounded-full transition-colors shadow-lg shadow-primary/20">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <div class="relative bg-gray-900 text-white overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent z-10"></div>
+                <div id="hero-backdrop" class="w-full h-full bg-cover bg-center opacity-60" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuASMj5eZTFJZJs9CywraW3SS7EjRRxBBEHqp-Y19NWauJrymZaNn1rXaEBcJQPTmnFDhF7-p6IIwNd7AQa6xtFWoImsrofyxVANdSPqev0LFMGsYGtKLktvAmYxrQAh7SAmvSUcuhxed8VZqLbtnuVBw9ocFdQcmk0jMeZlAJDbIk3YjSTlLfLNvQWmrF_OisbgJslncTjKUzc3oTfExAOGztOdWazgvwZYKGiLfTAsGiHOAPFMZ5QUHFa2B0sMATf-sQCA8zzcKptY');"></div>
+            </div>
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+                <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                    <div class="w-full lg:w-1/3 flex flex-col gap-4">
+                        <div class="relative aspect-video rounded-xl overflow-hidden shadow-2xl group cursor-pointer border border-white/10">
+                            <div id="hero-trailer-bg" class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDyWgC4UyWziyzpvGycmmrFcXTSS5aq4jSUnwBdTIjLplvd3mUe3Fi0fnEEH7FPiW53M7IPURk4T5B1Pz8y3Hrb-HzQnIXXjPPPDH0O_OiPjIi3-MLddIU-KFHdQmUeEyCTXERSUlNmk4G6Uv2eTjvPsb7d3ZgRl7jLNRnrrFGmrQjG4jvJr__cPyk3j5Dut52D5Yv91-IfGUpUVqrnnIhRFOmgkDIXQ1S3W_pkp1pc9w4Owzx2TKuyW7XynLBNtx60tLXTLOS1t-zV');"></div>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-4xl text-white">play_arrow</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-4 left-4">
+                                <span class="bg-primary text-white text-xs font-bold px-2 py-1 rounded">TRAILER</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-2/3 flex flex-col justify-end">
+                        <div id="hero-genres" class="flex flex-wrap gap-2 mb-4"></div>
+                        <h1 id="hero-title" class="text-4xl md:text-5xl lg:text-6xl font-black mb-2 leading-tight"></h1>
+                        <div class="flex items-center gap-6 mb-6">
+                            <div class="flex items-center gap-1 text-yellow-400">
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span id="hero-rating" class="text-xl font-bold text-white">4.8</span>
+                                <span id="hero-reviews" class="text-sm text-gray-400 ml-1">(12.5k Reviews)</span>
+                            </div>
+                            <div class="h-4 w-px bg-white/20"></div>
+                            <div class="flex items-center gap-2 text-gray-300">
+                                <span class="material-symbols-outlined text-sm">calendar_month</span>
+                                <span id="hero-release" class="text-sm">Release: 24 Oct 2024</span>
+                            </div>
+                        </div>
+                        <p id="hero-description" class="text-gray-300 text-lg leading-relaxed max-w-2xl mb-8"></p>
+                        <div class="flex flex-wrap gap-4">
+                            <button class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg shadow-primary/25 transition-all flex items-center gap-2" id="buy-ticket-hero-btn">
+                                <span class="material-symbols-outlined">confirmation_number</span>
+                                ซื้อตั๋ว
+                            </button>
+                            <button class="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-xl font-medium text-lg backdrop-blur-sm transition-all flex items-center gap-2" id="watchlist-hero-btn">
+                                <span class="material-symbols-outlined">add</span>
+                                เพิ่มไป Watchlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-30 mb-20">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <div class="border-b border-gray-100 bg-gray-50/50 p-6">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">เลือกโรงภาพยนตร์และรอบฉาย</h3>
+                </div>
+                <div id="showtimes-container" class="p-6 space-y-8 bg-white min-h-[400px]">
+                    <!-- Showtimes will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Cast Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <span class="w-1.5 h-8 bg-primary rounded-full block"></span>
+                Cast & Crew
+            </h2>
+            <div id="cast-container" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
+                <!-- Cast members will be populated here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm text-slate-500">© 2024 Major Cineplex Group Plc. All rights reserved.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">social_leaderboard</span></a>
+                    <a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">smart_display</span></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (async () => {
+            const WATCHLIST_KEY = 'cinema.watchlistByUid';
+
+            // Get movie ID from URL parameter
+            const params = new URLSearchParams(window.location.search);
+            const movieId = params.get('id') || 'death-whisperer-2';
+            const movie = moviesDatabase[movieId];
+
+            if (!movie) {
+                alert('Movie not found!');
+                window.location.href = 'home.html';
+                return;
+            }
+
+            // Update page title
+            document.getElementById('page-title').textContent = `${movie.titleThai} - Major Cineplex`;
+
+            // Update hero section
+            const realPoster = window.cinemaMovieImages?.getRealMoviePoster
+                ? await window.cinemaMovieImages.getRealMoviePoster(movie)
+                : null;
+            const heroBackdrop = realPoster || movie.backdropImage;
+            const heroTrailer = realPoster || movie.trailerImage || movie.backdropImage;
+            document.getElementById('hero-backdrop').style.backgroundImage = `url('${heroBackdrop}')`;
+            document.getElementById('hero-trailer-bg').style.backgroundImage = `url('${heroTrailer}')`;
+
+            // Update genres
+            const genresContainer = document.getElementById('hero-genres');
+            genresContainer.innerHTML = movie.genres.map(genre => 
+                `<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-medium text-white/80">${genre}</span>`
+            ).join('');
+            genresContainer.innerHTML += `<span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-white/80">${movie.duration}</span>`;
+
+            // Update title
+            document.getElementById('hero-title').innerHTML = `${movie.titleThai} <span class="block text-2xl md:text-3xl font-normal text-gray-300 mt-1">${movie.titleEng}</span>`;
+
+            // Update rating and reviews
+            document.getElementById('hero-rating').textContent = movie.rating;
+            document.getElementById('hero-reviews').textContent = `(${movie.reviews} Reviews)`;
+            document.getElementById('hero-release').textContent = `Release: ${movie.releaseDate}`;
+            document.getElementById('hero-description').textContent = movie.description;
+
+            // Update showtimes
+            const showtimesContainer = document.getElementById('showtimes-container');
+            showtimesContainer.innerHTML = movie.showtimes.map(cinema => `
+                <div class="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-100 last:border-0">
+                    <div class="w-full md:w-1/4">
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">${cinema.cinema}</h3>
+                        <p class="text-sm text-slate-500 mb-3 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">near_me</span> ${cinema.distance}
+                        </p>
+                        <div class="flex gap-2 flex-wrap">
+                            ${cinema.amenities.map(amenity => `<span class="text-[10px] font-bold px-2 py-1 bg-gray-100 text-slate-600 rounded uppercase tracking-wider">${amenity}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="w-full md:w-3/4 space-y-6">
+                        ${cinema.systems.map(system => `
+                            <div>
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="h-6 px-3 ${system.format === 'IMAX' ? 'w-12 bg-black' : 'bg-gray-200'} rounded flex items-center justify-center ${system.format === 'VIP Class' ? 'border border-yellow-200 bg-yellow-100' : ''}">
+                                        <span class="${system.format === 'IMAX' ? 'text-blue-400 font-black italic text-xs tracking-widest' : 'text-slate-600 font-bold text-xs'}">${system.format}</span>
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-700">${system.type}</span>
+                                </div>
+                                <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                                    ${system.times.map(showtime => `
+                                        <button class="group relative flex flex-col items-center justify-center py-2 px-3 border border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all showtime-btn" data-showtime="${showtime.time}" data-hall="${showtime.hall}">
+                                            <span class="text-lg font-bold text-slate-900 group-hover:text-primary">${showtime.time}</span>
+                                            <span class="text-[10px] text-slate-500">${showtime.hall}</span>
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Update cast
+            const castContainer = document.getElementById('cast-container');
+
+            const castImageFallbackByName = {
+                'Brie Larson': 'https://upload.wikimedia.org/wikipedia/commons/4/40/Captain_Marvel_trailer_at_the_National_Air_and_Space_Museum_4_%28cropped%29.jpg',
+                'Teyonah Parris': 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Teyonah_Parris_%2848468994196%29_%28ht%29.jpg',
+                'Iman Vellani': 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Iman_Vellani_2022_%282%29.png',
+                'Samuel L. Jackson': 'https://upload.wikimedia.org/wikipedia/commons/2/29/SamuelLJackson.jpg',
+                'Jennifer Lawrence': 'https://upload.wikimedia.org/wikipedia/commons/0/01/Jennifer_Lawrence%2C_Cannes_Film_Festival_2025.jpg',
+                'Josh Hutcherson': 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Josh_Hutcherson_by_Gage_Skidmore_2.jpg',
+                'Liam Hemsworth': 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Liam_Hemsworth_June_2016.jpg',
+                'Woody Harrelson': 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Woody_Harrelson_191020-N-NU281-1028_%28cropped%29.jpg',
+                'Leonardo DiCaprio': 'https://upload.wikimedia.org/wikipedia/commons/2/2d/LeoPTABFI191125-28_%28cropped%29.jpg',
+                'Robert De Niro': 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Robert_de_Niro_Cannes_Film_Festival_%283x4_cropped%29.jpg',
+                'Lily Gladstone': 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Lily_Gladstone_at_the_2024_Cannes_Film_Festival_%28cropped%29.jpg',
+                'Justin Timberlake': 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Justin_Timberlake_by_Gage_Skidmore_2.jpg',
+                'Anna Kendrick': 'https://upload.wikimedia.org/wikipedia/commons/1/13/Anna_Kendrick_Cannes_2016_2.jpg',
+                'Zooey Deschanel': 'https://upload.wikimedia.org/wikipedia/commons/0/00/Zooey_Deschanel_-_Song_Sung_Blue.jpg',
+                'Nadech Kugimiya': 'https://upload.wikimedia.org/wikipedia/commons/1/13/NadechKugimiya2014.jpg',
+                'Denise Jelilcha': 'https://upload.wikimedia.org/wikipedia/commons/3/30/Denise072024.jpg',
+                'Rattanawadee': 'https://upload.wikimedia.org/wikipedia/commons/0/05/Rattanawadee_2024-11-27.png'
+            };
+
+            function getCastImage(actor) {
+                const byName = castImageFallbackByName[String(actor?.name || '').trim()];
+                return byName || actor.image || 'https://picsum.photos/seed/cast-fallback/200/200';
+            }
+
+            function readWatchlistMap() {
+                try {
+                    const raw = localStorage.getItem(WATCHLIST_KEY);
+                    const parsed = raw ? JSON.parse(raw) : {};
+                    return parsed && typeof parsed === 'object' ? parsed : {};
+                } catch (_error) {
+                    return {};
+                }
+            }
+
+            function writeWatchlistMap(nextMap) {
+                localStorage.setItem(WATCHLIST_KEY, JSON.stringify(nextMap));
+            }
+
+            function getCurrentUid() {
+                return localStorage.getItem('cinema.uid') || '';
+            }
+
+            function addMovieToWatchlist(targetMovieId) {
+                const uid = getCurrentUid();
+                if (!uid) return { ok: false, message: 'กรุณาเข้าสู่ระบบก่อน' };
+
+                const watchlistMap = readWatchlistMap();
+                const current = new Set(Array.isArray(watchlistMap[uid]) ? watchlistMap[uid] : []);
+                if (current.has(targetMovieId)) {
+                    return { ok: true, existed: true };
+                }
+
+                current.add(targetMovieId);
+                watchlistMap[uid] = Array.from(current);
+                writeWatchlistMap(watchlistMap);
+                return { ok: true, existed: false };
+            }
+
+            function removeMovieFromWatchlist(targetMovieId) {
+                const uid = getCurrentUid();
+                if (!uid) return { ok: false, message: 'กรุณาเข้าสู่ระบบก่อน' };
+
+                const watchlistMap = readWatchlistMap();
+                const current = new Set(Array.isArray(watchlistMap[uid]) ? watchlistMap[uid] : []);
+                if (!current.has(targetMovieId)) {
+                    return { ok: true, removed: false };
+                }
+
+                current.delete(targetMovieId);
+                watchlistMap[uid] = Array.from(current);
+                writeWatchlistMap(watchlistMap);
+                return { ok: true, removed: true };
+            }
+
+            function toggleMovieInWatchlist(targetMovieId) {
+                const uid = getCurrentUid();
+                if (!uid) return { ok: false, message: 'กรุณาเข้าสู่ระบบก่อน' };
+
+                const map = readWatchlistMap();
+                const list = Array.isArray(map[uid]) ? map[uid] : [];
+                if (list.includes(targetMovieId)) {
+                    const removed = removeMovieFromWatchlist(targetMovieId);
+                    return { ...removed, action: 'removed' };
+                }
+
+                const added = addMovieToWatchlist(targetMovieId);
+                return { ...added, action: 'added' };
+            }
+
+            function updateWatchlistButtonState() {
+                const btn = document.getElementById('watchlist-hero-btn');
+                if (!btn) return;
+                const uid = getCurrentUid();
+                const map = readWatchlistMap();
+                const list = uid && Array.isArray(map[uid]) ? map[uid] : [];
+                const inWatchlist = list.includes(movieId);
+                btn.innerHTML = inWatchlist
+                    ? '<span class="material-symbols-outlined">check</span>บันทึกแล้วใน Watchlist'
+                    : '<span class="material-symbols-outlined">add</span>เพิ่มไป Watchlist';
+            }
+
+            const filteredCast = movie.cast.filter(actor => String(actor?.name || '').trim() !== 'Junior Kajbhunditt');
+
+            castContainer.innerHTML = filteredCast.map(actor => `
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-24 h-24 rounded-full bg-gray-200 mb-3 overflow-hidden shadow-md">
+                        <div class="w-full h-full bg-cover bg-center" style="background-image: url('${getCastImage(actor)}');"></div>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm">${actor.name}</h4>
+                    <p class="text-xs text-slate-500">${actor.role}</p>
+                </div>
+            `).join('');
+
+            // Handle showtime button clicks
+            document.querySelectorAll('.showtime-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const time = btn.getAttribute('data-showtime');
+                    const hall = btn.getAttribute('data-hall');
+                    window.authModule.requireLogin(() => {
+                        // Store selection and navigate to seat selection
+                        sessionStorage.setItem('selectedMovieId', movieId);
+                        sessionStorage.setItem('selectedTime', time);
+                        sessionStorage.setItem('selectedHall', hall);
+                        window.location.href = 'seat-selection.html';
+                    });
+                });
+            });
+
+            // Handle buy ticket button
+            document.getElementById('buy-ticket-hero-btn').addEventListener('click', () => {
+                const firstShowtime = movie.showtimes[0].systems[0].times[0];
+                window.authModule.requireLogin(() => {
+                    sessionStorage.setItem('selectedMovieId', movieId);
+                    sessionStorage.setItem('selectedTime', firstShowtime.time);
+                    sessionStorage.setItem('selectedHall', firstShowtime.hall);
+                    window.location.href = 'seat-selection.html';
+                });
+            });
+
+            const watchlistBtn = document.getElementById('watchlist-hero-btn');
+            if (watchlistBtn) {
+                watchlistBtn.addEventListener('click', () => {
+                    window.authModule.requireLogin(() => {
+                        const result = toggleMovieInWatchlist(movieId);
+                        if (!result.ok) {
+                            alert(result.message || 'ไม่สามารถอัปเดต Watchlist ได้');
+                            return;
+                        }
+                        updateWatchlistButtonState();
+                        if (result.action === 'added' && !result.existed) {
+                            alert('เพิ่มลง Watchlist แล้ว');
+                        } else if (result.action === 'removed' && result.removed) {
+                            alert('ลบออกจาก Watchlist แล้ว');
+                        }
+                    });
+                });
+            }
+
+            updateWatchlistButtonState();
+        })();
+    </script>
+
+    <!-- Login Modal Backdrop & Container -->
+    <div id="auth-backdrop" class="fixed inset-0 bg-black/0 backdrop-blur-0 transition-all duration-300 z-40 hidden" style="pointer-events: none;"></div>
+
+    <!-- Login/Signup Modal -->
+    <div id="auth-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white" id="modal-title">เข้าสู่ระบบ</h2>
+                <button id="modal-close-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6">
+                <!-- Tab Buttons -->
+                <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-700 p-1 rounded-lg">
+                    <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-login active bg-white dark:bg-slate-600 text-slate-900 dark:text-white" data-tab="login">
+                        เข้าสู่ระบบ
+                    </button>
+                    <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-signup text-slate-600 dark:text-slate-300" data-tab="signup">
+                        สร้างบัญชี
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                        <input id="login-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                        <input id="login-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                    </div>
+                    <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                        เข้าสู่ระบบ
+                    </button>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="login-error"></p>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signup-form" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ชื่อเล่น</label>
+                        <input id="signup-nickname" type="text" placeholder="ชื่อของคุณ" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                        <input id="signup-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                        <input id="signup-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ยืนยันรหัสผ่าน</label>
+                        <input id="signup-confirm-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                    </div>
+                    <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                        สร้างบัญชี
+                    </button>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="signup-error"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Menu -->
+    <div id="profile-menu" class="absolute top-20 right-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg hidden z-40 min-w-48">
+        <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+            <p class="font-bold text-slate-900 dark:text-white" id="user-name">ผู้ใช้</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400" id="user-email">email@example.com</p>
+        </div>
+        <button id="logout-btn" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">logout</span>
+            ออกจากระบบ
+        </button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
+        import { initializeAuthUI } from './auth.js';
+
+        const firebaseConfig = {
+            apiKey: 'AIzaSyC0I4lXYHrxh1543AF1NZcdAYulS2jbftM',
+            authDomain: 'frame-4e170.firebaseapp.com',
+            projectId: 'frame-4e170',
+            storageBucket: 'frame-4e170.firebasestorage.app',
+            messagingSenderId: '585102075629',
+            appId: '1:585102075629:web:f5c9d3e3745b8a35570ee4',
+            measurementId: 'G-0TCR1Y4LP2'
+        };
+
+        const app = initializeApp(firebaseConfig);
+        initializeAuthUI(app, firebaseConfig);
+    </script>
+</body>
+</html>

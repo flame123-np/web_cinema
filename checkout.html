@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Movie Checkout</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=Noto+Sans+Thai:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="movies-data.js"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e9508c",
+                        "primary-hover": "#d63d78",
+                        "primary-light": "#fdf2f6",
+                        "background-light": "#f8f6f7",
+                        "background-dark": "#211117",
+                        "surface": "#ffffff",
+                        "surface-dark": "#2d1b22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans Thai", "sans-serif"],
+                        "body": ["Inter", "Noto Sans Thai", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #cbd5e1;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-900 min-h-screen flex flex-col font-display antialiased">
+<!-- Navbar -->
+<div class="bg-surface border-b border-slate-200 sticky top-0 z-50">
+<div class="max-w-[1440px] mx-auto px-4 lg:px-8">
+<header class="flex items-center justify-between h-16">
+<div class="flex items-center gap-4">
+<a class="flex items-center gap-2 text-slate-900 hover:text-primary transition-colors" href="seat-selection.html">
+<span class="material-symbols-outlined">arrow_back</span>
+<span class="font-medium hidden sm:inline">ย้อนกลับ</span>
+</a>
+<div class="h-6 w-px bg-slate-200 mx-2"></div>
+<div class="flex items-center gap-2 text-slate-900">
+<a class="text-lg font-bold tracking-tight" href="home.html">Cinema</a>
+</div>
+</div>
+<!-- Step Indicator -->
+<div class="hidden md:flex items-center gap-2 text-sm font-medium">
+<span class="text-slate-400">เลือกรอบ</span>
+<span class="material-symbols-outlined text-slate-300 text-base">chevron_right</span>
+<span class="text-slate-400">เลือกที่นั่ง</span>
+<span class="material-symbols-outlined text-slate-300 text-base">chevron_right</span>
+<span class="text-primary bg-primary-light px-3 py-1 rounded-full">ชำระเงิน</span>
+<span class="material-symbols-outlined text-slate-300 text-base">chevron_right</span>
+<span class="text-slate-400">สิ้นสุด</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 text-sm">
+<span class="text-slate-500">เวลาที่เหลือ:</span>
+<span class="text-primary font-bold font-mono text-base" id="checkout-timer">12:00</span>
+</div>
+<button id="profile-btn" class="size-10 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-600">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</header>
+</div>
+</div>
+<!-- Main Content -->
+<main class="flex-grow p-4 lg:p-8 max-w-[1440px] mx-auto w-full">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 h-full">
+<!-- Column 1: Order Summary -->
+<section class="lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="p-5 border-b border-slate-100 flex items-center justify-between">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">receipt_long</span>
+                            สรุปรายการ (Summary)
+                        </h3>
+</div>
+<div class="p-5">
+<div class="flex gap-4 mb-6">
+<img class="w-24 h-36 object-cover rounded-lg shadow-md flex-shrink-0 bg-slate-200" data-alt="Abstract movie poster with blue and purple gradients representing Avatar" id="summary-movie-poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCANR7ambYBR6NXFdSYijpzzYbGMNLe81-D_p3STHCeidvznIriLF52eydEwmMJNUnnmgf2ydgpWSKFWsC69YpHpjXgFN9sbgsFuthwxKBoD7u2ZzhMGBYhJtXmAAPKHXOq11V70Te69Su1RV13Ret1Wt8nmCT10nyjCl_m51WeU2vDidDlwHq5Bws5XmOmy5arPF1HeNBXLoYbO7_V-sbZSf9so43ybVebWdDHxsStSf1gv7q2UlNxDS7kmQLHzz6eWaYlDyximxJN"/>
+<div class="flex flex-col gap-1">
+<h4 class="font-bold text-lg leading-tight text-slate-900" id="summary-movie-title">Avatar: The Way of Water</h4>
+<div class="flex items-center gap-1 text-sm text-slate-500 mt-1">
+<span class="px-1.5 py-0.5 rounded border border-slate-300 text-xs font-semibold" id="summary-format">IMAX 3D</span>
+<span class="px-1.5 py-0.5 rounded border border-slate-300 text-xs font-semibold" id="summary-language">EN/TH</span>
+</div>
+<p class="text-sm text-slate-600 mt-2" id="summary-cinema">Major Cineplex Siam Paragon</p>
+<p class="text-sm text-slate-600" id="summary-hall">Cinema 4</p>
+<p class="text-sm font-medium text-primary mt-1" id="summary-datetime">วันนี้, 19:30 น.</p>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-slate-100 border-dashed">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-slate-900" id="summary-seat-label">ที่นั่งปกติ (Normal Seat)</p>
+<p class="text-xs text-slate-500" id="summary-seat-codes">E12, E13</p>
+</div>
+<p class="text-sm font-bold text-slate-900" id="summary-seat-price">฿480.00</p>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-slate-900">ค่าบริการ (Service Fee)</p>
+<p class="text-xs text-slate-500" id="summary-service-count">2 ที่นั่ง</p>
+</div>
+<p class="text-sm font-bold text-slate-900" id="summary-service-price">฿40.00</p>
+</div>
+<div class="flex justify-between items-start pt-2">
+<p class="text-sm font-medium text-primary">ส่วนลด (Discount)</p>
+<p class="text-sm font-bold text-primary" id="summary-discount">-฿0.00</p>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-200 flex justify-between items-end">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500">ยอดสุทธิ (Total)</span>
+<span class="text-2xl font-black text-slate-900 tracking-tight" id="summary-total">฿520.00</span>
+</div>
+<button class="text-sm text-primary font-bold hover:underline" id="edit-order-btn">แก้ไขรายการ</button>
+</div>
+</div>
+</div>
+<!-- Security Badge -->
+<div class="flex items-center justify-center gap-2 text-slate-400 text-xs bg-slate-50 p-3 rounded-lg border border-slate-100">
+<span class="material-symbols-outlined text-base">lock</span>
+<span>การชำระเงินปลอดภัยด้วยมาตรฐาน SSL 256-bit</span>
+</div>
+</section>
+<!-- Column 2: Promotions & Discounts -->
+<section class="lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface rounded-2xl shadow-sm border border-slate-100 overflow-hidden h-fit">
+<div class="p-5 border-b border-slate-100">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">percent</span>
+                            ส่วนลดและโปรโมชั่น
+                        </h3>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<!-- Promo Code Input -->
+<div>
+<label class="block text-sm font-medium text-slate-700 mb-2">รหัสส่วนลด (Promo Code)</label>
+<div class="flex gap-2">
+<div class="relative flex-grow">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">local_activity</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" id="promo-code-input" placeholder="กรอกรหัสส่วนลด" type="text"/>
+</div>
+<button class="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-slate-800 transition-colors" id="apply-promo-btn">ใช้โค้ด</button>
+</div>
+</div>
+<div id="active-code-banner" class="hidden rounded-lg border border-slate-200 bg-slate-50 p-3">
+<p class="text-sm font-semibold text-slate-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-slate-500">local_activity</span>
+<span>กำลังใช้โค้ด: <span id="active-code-text" class="text-primary"></span></span>
+</p>
+<p class="text-xs text-slate-500 mt-1">ใช้ได้ 1 โค้ดต่อการชำระเงินเท่านั้น</p>
+</div>
+<div class="rounded-2xl border border-primary/20 bg-primary-light p-4">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-2">
+<div class="size-8 rounded-lg bg-primary text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-base">sell</span>
+</div>
+<div>
+<p class="text-[28px] leading-none font-semibold text-slate-800">M-Gen Points</p>
+</div>
+</div>
+<span class="text-xs font-semibold text-primary bg-white/80 border border-primary/20 rounded-full px-2 py-0.5">Member</span>
+</div>
+<p class="text-sm text-slate-600 mt-4" id="points-available">คะแนนสะสมของคุณ: -</p>
+<div class="flex items-center justify-between mt-3">
+<p class="text-sm text-slate-700 font-medium">ใช้คะแนนแลกส่วนลด</p>
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only peer" id="use-points-checkbox" type="checkbox"/>
+<span class="w-11 h-6 bg-slate-300 rounded-full relative transition-colors peer-checked:bg-primary after:content-[''] after:absolute after:left-0.5 after:top-0.5 after:size-5 after:bg-white after:rounded-full after:transition-transform peer-checked:after:translate-x-5"></span>
+</label>
+</div>
+<p class="text-xs text-slate-500 mt-2" id="points-hint">ใช้ 80 คะแนน ลด 30 บาท</p>
+</div>
+</div>
+</section>
+<!-- Column 3: Payment Method -->
+<section class="lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface rounded-2xl shadow-sm border border-slate-100 overflow-hidden h-fit relative">
+<div class="p-5 border-b border-slate-100">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">payments</span>
+                            เลือกช่องทางชำระเงิน
+                        </h3>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<div class="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-lg">
+<button class="payment-tab-btn bg-white text-primary text-sm font-semibold py-2 rounded-md" data-method="card" id="payment-tab-card" type="button">บัตรเครดิต</button>
+<button class="payment-tab-btn text-slate-600 text-sm font-semibold py-2 rounded-md" data-method="qr" id="payment-tab-qr" type="button">QR พร้อมเพย์</button>
+<button class="payment-tab-btn text-slate-600 text-sm font-semibold py-2 rounded-md" data-method="ewallet" id="payment-tab-ewallet" type="button">e-Wallet</button>
+</div>
+<div class="payment-panel" id="payment-panel-card">
+<div class="space-y-3">
+<div>
+<label class="block text-sm font-semibold text-slate-500 mb-1">หมายเลขบัตร (CARD NUMBER)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">credit_card</span>
+<input class="w-full rounded-lg border border-slate-200 bg-slate-50 pl-11 pr-20 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" id="card-number" maxlength="19" placeholder="0000 0000 0000 0000" type="text"/>
+<span class="absolute right-11 top-1/2 -translate-y-1/2 size-7 rounded bg-slate-200"></span>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 size-7 rounded bg-slate-200"></span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-500 mb-1">ชื่อบนบัตร (CARD HOLDER NAME)</label>
+<input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" id="card-name" placeholder="NAME SURNAME" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-sm font-semibold text-slate-500 mb-1">วันหมดอายุ (EXPIRY)</label>
+<input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" id="card-expiry" maxlength="5" placeholder="MM/YY" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-500 mb-1">CVV</label>
+<input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" id="card-cvv" maxlength="4" placeholder="123" type="password"/>
+</div>
+</div>
+<label class="inline-flex items-start gap-2 text-sm text-slate-500">
+<input class="mt-0.5 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+<span>บันทึกข้อมูลบัตรไว้สำหรับการชำระเงินครั้งถัดไป (Save card for future payments)</span>
+</label>
+</div>
+</div>
+<div class="payment-panel hidden" id="payment-panel-qr">
+<div class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+<span class="material-symbols-outlined text-4xl text-slate-500">qr_code_2</span>
+<p class="text-sm font-semibold text-slate-800 mt-2">ชำระผ่าน QR พร้อมเพย์</p>
+<p class="text-xs text-slate-500 mt-1">ระบบจะสร้าง QR อัตโนมัติหลังยืนยันชำระเงิน</p>
+</div>
+</div>
+<div class="payment-panel hidden" id="payment-panel-ewallet">
+<div class="space-y-3">
+<div>
+<label class="block text-sm font-medium text-slate-700 mb-1">ผู้ให้บริการ e-Wallet</label>
+<select class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" id="ewallet-provider">
+<option value="">เลือกผู้ให้บริการ</option>
+<option value="truemoney">TrueMoney</option>
+<option value="linepay">LINE Pay</option>
+<option value="shopeepay">ShopeePay</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 mb-1">เบอร์มือถือ</label>
+<input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" id="ewallet-phone" maxlength="10" placeholder="08xxxxxxxx" type="tel"/>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-4 mt-2 border-t border-slate-100">
+<button class="w-full bg-primary hover:bg-primary-hover text-white text-lg font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/30 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 group" id="confirm-payment-btn">
+<span>ยืนยันชำระเงิน</span>
+<span class="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors" id="confirm-payment-total">฿520.00</span>
+</button>
+<p class="text-center text-xs text-slate-400 mt-4">
+                                การคลิกปุ่มยืนยันแสดงว่าคุณยอมรับ <a class="text-primary hover:underline" href="terms-of-service.html">เงื่อนไขการให้บริการ</a>
+</p>
+</div>
+</div>
+</div>
+<!-- Helper Support -->
+<div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900">ต้องการความช่วยเหลือ?</p>
+<p class="text-xs text-slate-500">ติดต่อ Call Center <a class="hover:text-primary hover:underline" href="tel:021234567">02-123-4567</a></p>
+</div>
+</div>
+<a class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-2 rounded-lg hover:bg-slate-200 transition-colors" href="tel:021234567">ติดต่อเรา</a>
+</div>
+</section>
+</div>
+</main>
+<script>
+    (() => {
+        const DRAFT_KEY = 'cinema.checkoutDraft';
+        const COUNTDOWN_KEY = 'cinema.checkoutCountdownEndsAt';
+        const USED_PROMOS_KEY = 'cinema.usedPromoCodesByUid';
+        const COUNTDOWN_DURATION_MS = 12 * 60 * 1000;
+        const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const API_BASE = window.location.protocol === 'file:' || (isLocalHost && window.location.port !== '4316')
+            ? 'http://localhost:4316'
+            : '';
+        const draftRaw = localStorage.getItem(DRAFT_KEY);
+
+        if (!draftRaw) {
+            alert('ไม่พบข้อมูลที่นั่งที่เลือก กรุณาเลือกที่นั่งใหม่');
+            window.location.href = 'seat-selection.html';
+            return;
+        }
+
+        const draft = JSON.parse(draftRaw);
+        let activePromoCode = draft.promoCode || '';
+        let usePoints = Boolean(draft.usePoints);
+        let selectedPaymentMethod = draft.paymentMethod || 'card';
+
+        const promoInput = document.getElementById('promo-code-input');
+        const applyPromoBtn = document.getElementById('apply-promo-btn');
+        const usePointsCheckbox = document.getElementById('use-points-checkbox');
+        const pointsAvailable = document.getElementById('points-available');
+        const pointsHint = document.getElementById('points-hint');
+        const activeCodeBanner = document.getElementById('active-code-banner');
+        const activeCodeText = document.getElementById('active-code-text');
+        const paymentTabs = Array.from(document.querySelectorAll('.payment-tab-btn'));
+        const paymentPanels = {
+            card: document.getElementById('payment-panel-card'),
+            qr: document.getElementById('payment-panel-qr'),
+            ewallet: document.getElementById('payment-panel-ewallet')
+        };
+        const cardNumberInput = document.getElementById('card-number');
+        const cardNameInput = document.getElementById('card-name');
+        const cardExpiryInput = document.getElementById('card-expiry');
+        const cardCvvInput = document.getElementById('card-cvv');
+        const ewalletProviderInput = document.getElementById('ewallet-provider');
+        const ewalletPhoneInput = document.getElementById('ewallet-phone');
+
+        const summaryMoviePoster = document.getElementById('summary-movie-poster');
+        const summaryMovieTitle = document.getElementById('summary-movie-title');
+        const summaryFormat = document.getElementById('summary-format');
+        const summaryLanguage = document.getElementById('summary-language');
+        const summaryCinema = document.getElementById('summary-cinema');
+        const summaryHall = document.getElementById('summary-hall');
+        const summaryDatetime = document.getElementById('summary-datetime');
+        const summarySeatLabel = document.getElementById('summary-seat-label');
+        const summarySeatCodes = document.getElementById('summary-seat-codes');
+        const summarySeatPrice = document.getElementById('summary-seat-price');
+        const summaryServiceCount = document.getElementById('summary-service-count');
+        const summaryServicePrice = document.getElementById('summary-service-price');
+        const summaryDiscount = document.getElementById('summary-discount');
+        const summaryTotal = document.getElementById('summary-total');
+        const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+        const confirmPaymentTotal = document.getElementById('confirm-payment-total');
+        const editOrderBtn = document.getElementById('edit-order-btn');
+        const countdownTimer = document.getElementById('checkout-timer');
+        const uid = localStorage.getItem('cinema.uid');
+
+        let lastPreview = null;
+
+        function getUsedPromoMap() {
+            try {
+                const raw = localStorage.getItem(USED_PROMOS_KEY);
+                const parsed = raw ? JSON.parse(raw) : {};
+                return parsed && typeof parsed === 'object' ? parsed : {};
+            } catch {
+                return {};
+            }
+        }
+
+        function getUsedPromoSet() {
+            if (!uid) return new Set();
+            const usedByUid = getUsedPromoMap();
+            const list = Array.isArray(usedByUid[uid]) ? usedByUid[uid] : [];
+            return new Set(list.map((code) => String(code).trim().toUpperCase()).filter(Boolean));
+        }
+
+        function markPromoCodeUsed(code) {
+            const normalized = String(code || '').trim().toUpperCase();
+            if (!uid || !normalized) return;
+            const usedByUid = getUsedPromoMap();
+            const current = new Set(Array.isArray(usedByUid[uid]) ? usedByUid[uid] : []);
+            current.add(normalized);
+            usedByUid[uid] = Array.from(current);
+            localStorage.setItem(USED_PROMOS_KEY, JSON.stringify(usedByUid));
+        }
+
+        function isPromoCodeLocallyUsed(code) {
+            const normalized = String(code || '').trim().toUpperCase();
+            if (!normalized) return false;
+            return getUsedPromoSet().has(normalized);
+        }
+
+        function formatCountdown(msLeft) {
+            const safeMs = Math.max(msLeft, 0);
+            const totalSeconds = Math.floor(safeMs / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function startCheckoutCountdown() {
+            if (!countdownTimer) return;
+
+            const now = Date.now();
+            let endsAt = Number(localStorage.getItem(COUNTDOWN_KEY));
+
+            if (!endsAt || Number.isNaN(endsAt) || endsAt <= now) {
+                endsAt = now + COUNTDOWN_DURATION_MS;
+                localStorage.setItem(COUNTDOWN_KEY, String(endsAt));
+            }
+
+            const tick = () => {
+                const remainingMs = endsAt - Date.now();
+                countdownTimer.textContent = formatCountdown(remainingMs);
+
+                if (remainingMs <= 0) {
+                    localStorage.removeItem(COUNTDOWN_KEY);
+                    localStorage.removeItem(DRAFT_KEY);
+                    alert('หมดเวลาชำระเงิน กรุณาเลือกที่นั่งใหม่อีกครั้ง');
+                    window.location.href = 'seat-selection.html';
+                }
+            };
+
+            tick();
+            const timerId = setInterval(() => {
+                const remainingMs = endsAt - Date.now();
+                if (remainingMs <= 0) {
+                    clearInterval(timerId);
+                }
+                tick();
+            }, 1000);
+        }
+
+        function updateActiveCodeUI() {
+            const code = String(activePromoCode || '').trim().toUpperCase();
+            if (!activeCodeBanner || !activeCodeText) return;
+            if (!code) {
+                activeCodeBanner.classList.add('hidden');
+                activeCodeText.textContent = '';
+                return;
+            }
+            activeCodeBanner.classList.remove('hidden');
+            activeCodeText.textContent = code;
+        }
+
+        function formatMoney(value) {
+            return `฿${Number(value).toLocaleString('th-TH')}.00`;
+        }
+
+        function persistDraft() {
+            draft.promoCode = activePromoCode;
+            draft.usePoints = usePoints;
+            draft.paymentMethod = selectedPaymentMethod;
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+        }
+
+        function setPaymentMethod(method) {
+            const nextMethod = ['card', 'qr', 'ewallet'].includes(method) ? method : 'card';
+            selectedPaymentMethod = nextMethod;
+            paymentTabs.forEach((tab) => {
+                const isActive = tab.dataset.method === nextMethod;
+                tab.classList.toggle('bg-white', isActive);
+                tab.classList.toggle('text-slate-900', isActive);
+                tab.classList.toggle('text-slate-600', !isActive);
+            });
+            Object.entries(paymentPanels).forEach(([key, panel]) => {
+                if (!panel) return;
+                panel.classList.toggle('hidden', key !== nextMethod);
+            });
+            persistDraft();
+        }
+
+        function findMovieIdByTitle(title) {
+            if (!title || typeof moviesDatabase === 'undefined') return null;
+            const normalized = String(title).trim().toLowerCase();
+            const entry = Object.values(moviesDatabase).find((movieItem) => {
+                const thai = String(movieItem.titleThai || '').trim().toLowerCase();
+                const eng = String(movieItem.titleEng || '').trim().toLowerCase();
+                return thai === normalized || eng === normalized;
+            });
+            return entry?.id || null;
+        }
+
+        function getMovieFromPreview(movie, showtime) {
+            if (typeof moviesDatabase === 'undefined') return null;
+            const idByShowtime = showtime?.movieId;
+            if (idByShowtime && moviesDatabase[idByShowtime]) return moviesDatabase[idByShowtime];
+            const idByTitle = findMovieIdByTitle(movie?.title);
+            return idByTitle ? moviesDatabase[idByTitle] : null;
+        }
+
+        function getFallbackPoster(movieRef, movieId) {
+            if (movieRef) return movieRef.backdropImage || movieRef.trailerImage;
+            if (movieId) return `https://picsum.photos/seed/${encodeURIComponent(movieId)}-poster/500/750`;
+            return 'https://picsum.photos/seed/movie-fallback/500/750';
+        }
+
+        async function fetchPreview() {
+            const response = await fetch(`${API_BASE}/api/checkout/preview`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    showtimeId: draft.showtimeId,
+                    seats: draft.seats,
+                    promoCode: activePromoCode,
+                    usePoints,
+                    uid: uid || null
+                })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || 'Preview failed');
+            }
+
+            return response.json();
+        }
+
+        function renderPreview(data) {
+            lastPreview = data;
+            const { movie, showtime, seats, pricing } = data;
+            const loyalty = data.loyalty || { availablePoints: 0, canUsePoints: false, pointsRequired: 80, pointsDiscount: 30 };
+
+            const mappedMovie = getMovieFromPreview(movie, showtime);
+            const mappedMovieId = mappedMovie?.id || showtime?.movieId || findMovieIdByTitle(movie?.title);
+
+            if (summaryMoviePoster) {
+                summaryMoviePoster.src = getFallbackPoster(mappedMovie, mappedMovieId);
+                summaryMoviePoster.alt = `Movie poster for ${movie.title}`;
+
+                if (mappedMovie && window.cinemaMovieImages?.getRealMoviePoster) {
+                    window.cinemaMovieImages.getRealMoviePoster(mappedMovie).then((posterUrl) => {
+                        if (posterUrl) {
+                            summaryMoviePoster.src = posterUrl;
+                        }
+                    }).catch(() => {});
+                } else if (movie.poster) {
+                    summaryMoviePoster.src = movie.poster;
+                }
+            }
+            summaryMovieTitle.textContent = movie.title;
+            if (summaryFormat) summaryFormat.textContent = movie.format || '-';
+            if (summaryLanguage) summaryLanguage.textContent = movie.language || '-';
+            summaryCinema.textContent = movie.cinema;
+            summaryHall.textContent = movie.hall;
+            summaryDatetime.textContent = `${showtime.dateLabel}, ${showtime.startTime} น.`;
+            summarySeatLabel.textContent = `ที่นั่งที่เลือก (${seats.length} ที่นั่ง)`;
+            summarySeatCodes.textContent = seats.join(', ');
+            summarySeatPrice.textContent = formatMoney(pricing.seatSubtotal);
+            summaryServiceCount.textContent = `${seats.length} ที่นั่ง`;
+            summaryServicePrice.textContent = formatMoney(pricing.serviceFee);
+            summaryDiscount.textContent = `-${formatMoney(pricing.discount)}`;
+            summaryTotal.textContent = formatMoney(pricing.total);
+            confirmPaymentTotal.textContent = formatMoney(pricing.total);
+
+            if (pointsAvailable) {
+                pointsAvailable.textContent = `คะแนนคงเหลือ: ${Number(loyalty.availablePoints || 0).toLocaleString('th-TH')} คะแนน`;
+            }
+            if (pointsHint) {
+                pointsHint.textContent = `ใช้ ${loyalty.pointsRequired || 80} คะแนน ลด ${formatMoney(loyalty.pointsDiscount || 30)}`;
+            }
+            if (usePointsCheckbox) {
+                usePointsCheckbox.disabled = !loyalty.canUsePoints;
+                if (!loyalty.canUsePoints && usePoints) {
+                    usePoints = false;
+                    usePointsCheckbox.checked = false;
+                    persistDraft();
+                }
+            }
+
+            updateActiveCodeUI();
+        }
+
+        async function refreshPreview() {
+            try {
+                confirmPaymentBtn.disabled = true;
+                const data = await fetchPreview();
+                renderPreview(data);
+            } catch (error) {
+                alert(error.message || 'ไม่สามารถคำนวณราคาได้');
+            } finally {
+                confirmPaymentBtn.disabled = false;
+            }
+        }
+
+        function validatePaymentForm() {
+            if (selectedPaymentMethod === 'card') {
+                const digits = String(cardNumberInput?.value || '').replace(/\D/g, '');
+                const name = String(cardNameInput?.value || '').trim();
+                const expiry = String(cardExpiryInput?.value || '').trim();
+                const cvv = String(cardCvvInput?.value || '').trim();
+                if (digits.length < 12 || !name || !/^\d{2}\/\d{2}$/.test(expiry) || !/^\d{3,4}$/.test(cvv)) {
+                    return false;
+                }
+            }
+
+            if (selectedPaymentMethod === 'ewallet') {
+                const provider = String(ewalletProviderInput?.value || '').trim();
+                const phone = String(ewalletPhoneInput?.value || '').replace(/\D/g, '');
+                if (!provider || phone.length !== 10) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        applyPromoBtn.addEventListener('click', async () => {
+            const requestedCode = promoInput.value.trim().toUpperCase();
+            if (requestedCode && isPromoCodeLocallyUsed(requestedCode)) {
+                alert('โค้ดนี้ถูกใช้ไปแล้ว');
+                return;
+            }
+            activePromoCode = requestedCode;
+            persistDraft();
+            await refreshPreview();
+        });
+
+        promoInput.addEventListener('keydown', async (event) => {
+            if (event.key !== 'Enter') return;
+            event.preventDefault();
+            const requestedCode = promoInput.value.trim().toUpperCase();
+            if (requestedCode && isPromoCodeLocallyUsed(requestedCode)) {
+                alert('โค้ดนี้ถูกใช้ไปแล้ว');
+                return;
+            }
+            activePromoCode = requestedCode;
+            persistDraft();
+            await refreshPreview();
+        });
+
+        if (usePointsCheckbox) {
+            usePointsCheckbox.checked = usePoints;
+            usePointsCheckbox.addEventListener('change', async () => {
+                usePoints = usePointsCheckbox.checked;
+                persistDraft();
+                await refreshPreview();
+            });
+        }
+
+        paymentTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                setPaymentMethod(tab.dataset.method);
+            });
+        });
+
+        cardNumberInput?.addEventListener('input', () => {
+            const digits = cardNumberInput.value.replace(/\D/g, '').slice(0, 16);
+            cardNumberInput.value = digits.replace(/(.{4})/g, '$1 ').trim();
+        });
+
+        cardExpiryInput?.addEventListener('input', () => {
+            const digits = cardExpiryInput.value.replace(/\D/g, '').slice(0, 4);
+            cardExpiryInput.value = digits.length > 2
+                ? `${digits.slice(0, 2)}/${digits.slice(2)}`
+                : digits;
+        });
+
+        ewalletPhoneInput?.addEventListener('input', () => {
+            ewalletPhoneInput.value = ewalletPhoneInput.value.replace(/\D/g, '').slice(0, 10);
+        });
+
+        confirmPaymentBtn.addEventListener('click', async () => {
+            if (!lastPreview) {
+                alert('ยังไม่พร้อมชำระเงิน');
+                return;
+            }
+
+            if (!validatePaymentForm()) {
+                alert('ข้อมูลการชำระเงินไม่ถูกต้อง');
+                return;
+            }
+
+            try {
+                confirmPaymentBtn.disabled = true;
+                const cardDigits = String(cardNumberInput?.value || '').replace(/\D/g, '');
+                const codeBeforeBooking = String(activePromoCode || '').trim().toUpperCase();
+                
+                const response = await fetch(`${API_BASE}/api/bookings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        showtimeId: draft.showtimeId,
+                        seats: draft.seats,
+                        promoCode: activePromoCode,
+                        usePoints,
+                        paymentMethod: selectedPaymentMethod,
+                        cardLast4: selectedPaymentMethod === 'card' && cardDigits.length >= 4
+                            ? cardDigits.slice(-4)
+                            : '0000',
+                        uid: uid || null
+                    })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.message || 'ชำระเงินไม่สำเร็จ');
+                }
+
+                const booking = await response.json();
+                if (codeBeforeBooking) {
+                    markPromoCodeUsed(codeBeforeBooking);
+                }
+                localStorage.setItem('cinema.latestBookingId', booking.bookingId);
+                localStorage.removeItem(DRAFT_KEY);
+                localStorage.removeItem(COUNTDOWN_KEY);
+                window.location.href = `booking-confirmation.html?bookingId=${encodeURIComponent(booking.bookingId)}`;
+            } catch (error) {
+                if (String(error?.message || '').includes('โค้ดนี้ถูกใช้ไปแล้ว')) {
+                    const usedCode = String(activePromoCode || '').trim().toUpperCase();
+                    markPromoCodeUsed(usedCode);
+                }
+                alert(error.message || 'ชำระเงินไม่สำเร็จ');
+            } finally {
+                confirmPaymentBtn.disabled = false;
+            }
+        });
+
+        promoInput.value = activePromoCode;
+        setPaymentMethod(selectedPaymentMethod);
+        editOrderBtn.addEventListener('click', () => {
+            localStorage.removeItem(COUNTDOWN_KEY);
+            window.location.href = `seat-selection.html?showtimeId=${encodeURIComponent(draft.showtimeId)}`;
+        });
+        updateActiveCodeUI();
+        startCheckoutCountdown();
+        refreshPreview();
+    })();
+</script>
+
+<!-- Login Modal Backdrop & Container -->
+<div id="auth-backdrop" class="fixed inset-0 bg-black/0 backdrop-blur-0 transition-all duration-300 z-40 hidden" style="pointer-events: none;"></div>
+
+<!-- Login/Signup Modal -->
+<div id="auth-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 overflow-hidden">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white" id="modal-title">เข้าสู่ระบบ</h2>
+            <button id="modal-close-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="p-6">
+            <!-- Tab Buttons -->
+            <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-700 p-1 rounded-lg">
+                <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-login active bg-white dark:bg-slate-600 text-slate-900 dark:text-white" data-tab="login">
+                    เข้าสู่ระบบ
+                </button>
+                <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-signup text-slate-600 dark:text-slate-300" data-tab="signup">
+                    สร้างบัญชี
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                    <input id="login-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                    <input id="login-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                    เข้าสู่ระบบ
+                </button>
+                <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="login-error"></p>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ชื่อเล่น</label>
+                    <input id="signup-nickname" type="text" placeholder="ชื่อของคุณ" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">อีเมล</label>
+                    <input id="signup-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">รหัสผ่าน</label>
+                    <input id="signup-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">ยืนยันรหัสผ่าน</label>
+                    <input id="signup-confirm-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+                    สร้างบัญชี
+                </button>
+                <p class="text-slate-600 dark:text-slate-400 text-sm text-center" id="signup-error"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- User Profile Menu -->
+<div id="profile-menu" class="absolute top-20 right-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg hidden z-40 min-w-48">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-900 dark:text-white" id="user-name">ผู้ใช้</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400" id="user-email">email@example.com</p>
+    </div>
+    <button id="logout-btn" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">logout</span>
+        ออกจากระบบ
+    </button>
+</div>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
+    import { initializeAuthUI } from './auth.js';
+
+    const firebaseConfig = {
+        apiKey: 'AIzaSyC0I4lXYHrxh1543AF1NZcdAYulS2jbftM',
+        authDomain: 'frame-4e170.firebaseapp.com',
+        projectId: 'frame-4e170',
+        storageBucket: 'frame-4e170.firebasestorage.app',
+        messagingSenderId: '585102075629',
+        appId: '1:585102075629:web:f5c9d3e3745b8a35570ee4',
+        measurementId: 'G-0TCR1Y4LP2'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    initializeAuthUI(app, firebaseConfig);
+</script>
+</body></html>

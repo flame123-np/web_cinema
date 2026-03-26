@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movies - Cinema</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="movies-data.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#e9508c',
+            'background-light': '#f8f6f7'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background-light text-slate-900 min-h-screen flex flex-col font-[Inter]">
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-8">
+        <a href="home.html" class="text-2xl font-black tracking-tight text-slate-900 shrink-0">Cinema</a>
+        <div class="hidden md:flex flex-1 max-w-md">
+          <label class="relative w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-primary">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <input id="page-search-input" class="block w-full p-2.5 pl-10 text-sm text-slate-900 bg-background-light border-none rounded-lg focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-slate-400" placeholder="ค้นหาหนังในหน้านี้" type="text"/>
+          </label>
+        </div>
+        <div class="flex items-center gap-6">
+          <nav class="hidden lg:flex items-center gap-6">
+            <a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="home.html">หน้าแรก</a>
+            <a class="text-primary text-sm font-semibold transition-colors" href="movies.html">ภาพยนตร์</a>
+            <a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="cinemas.html">โรงภาพยนตร์</a>
+            <a class="text-slate-700 hover:text-primary text-sm font-semibold transition-colors" href="promotions.html">โปรโมชั่น</a>
+          </nav>
+          <div class="flex items-center gap-3">
+            <div class="hidden sm:flex items-center bg-background-light rounded-full px-4 py-1.5 border border-slate-200">
+              <span class="material-symbols-outlined text-primary text-lg mr-2">stars</span>
+              <span id="member-points" class="text-sm font-bold text-slate-800">0 คะแนน</span>
+            </div>
+            <button class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 transition overflow-hidden" id="profile-btn">
+              <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6q4FeHiQsMOkQmj95z4EzvVinKOtDV4QriFwJ-QOyxBuFStWbd8c0kj_D_uLRJ6mhM4F3cUHWJ5GRhfSXKrdY-VgnmwK5KrBS7imj4IS7ivi2TmK3w21WLLX4ogiMYQ3aNu1eHT36wlkALUffpQrsaUjif3sNoiT9SS6WHYMUr1HC1HnTWl4PxzYESchpE7NgSo7ELYMd4tPUeUjFSgwGChFzQ7Y6-YZaiuz_wrMBFptDjh4ZutyumxzRzrIQDT0m99Epmo1T99h0" id="profile-img"/>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-8">
+      <div>
+        <h1 class="text-3xl font-black mb-2">Movies</h1>
+        <p class="text-slate-600">รวมภาพยนตร์ที่กำลังฉายและรอบใหม่ล่าสุด</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-6">
+      <button class="filter-btn px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-bold whitespace-nowrap" data-genre="all">ทั้งหมด</button>
+      <button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="แอ็คชัน">แอ็คชัน</button>
+      <button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="สยองขวัญ">สยองขวัญ</button>
+      <button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="แอนิเมชัน">แอนิเมชัน</button>
+      <button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="ดราม่า">ดราม่า</button>
+      <button class="filter-btn px-4 py-2 bg-background-light hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-medium whitespace-nowrap transition" data-genre="ไซไฟ">ไซไฟ</button>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="movies-grid">
+      <!-- Movies will be populated here -->
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-12 mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">Cinema</h5>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li><a class="hover:text-primary" href="about.html">เกี่ยวกับเรา</a></li>
+            <li><a class="hover:text-primary" href="careers.html">สมัครงาน</a></li>
+            <li><a class="hover:text-primary" href="advertising.html">ติดต่อโฆษณา</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">บริการช่วยเหลือ</h5>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li><a class="hover:text-primary" href="faq.html">คำถามที่พบบ่อย</a></li>
+            <li><a class="hover:text-primary" href="contact.html">ติดต่อเรา</a></li>
+            <li><a class="hover:text-primary" href="terms-of-service.html">ข้อตกลงและเงื่อนไข</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">ภาพยนตร์</h5>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li><a class="hover:text-primary" href="home.html#movie-grid">กำลังฉาย</a></li>
+            <li><a class="hover:text-primary" href="home.html#coming-soon">โปรแกรมหน้า</a></li>
+            <li><a class="hover:text-primary" href="promotions.html">โปรโมชั่น</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-bold text-slate-900 mb-4">ติดตามเรา</h5>
+          <div class="flex gap-4">
+            <a class="text-slate-400 hover:text-primary transition" href="https://www.instagram.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">public</span></a>
+            <a class="text-slate-400 hover:text-primary transition" href="https://www.facebook.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">thumb_up</span></a>
+            <a class="text-slate-400 hover:text-primary transition" href="https://x.com" rel="noopener" target="_blank"><span class="material-symbols-outlined">share</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-xs text-slate-400 pt-8 border-t border-slate-100">
+        © 2023 Cinema. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const moviesGrid = document.getElementById('movies-grid');
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const pageSearchInput = document.getElementById('page-search-input');
+      const genreAlias = {
+        action: 'แอ็คชัน',
+        adventure: 'ผจญภัย',
+        thriller: 'ระทึกขวัญ',
+        comedy: 'คอมเมดี้',
+        crime: 'อาชญากรรม',
+        animation: 'แอนิเมชัน',
+        drama: 'ดราม่า',
+        fantasy: 'แฟนตาซี',
+        scifi: 'ไซไฟ',
+        'sci-fi': 'ไซไฟ',
+        horror: 'สยองขวัญ'
+      };
+
+      function normalizeGenreLabel(genre) {
+        const normalized = String(genre || '').toLowerCase().replace(/\s+/g, '').trim();
+        return genreAlias[normalized] || genre;
+      }
+
+      function getPoster(movie) {
+        return movie.backdropImage || movie.trailerImage || `https://picsum.photos/seed/${encodeURIComponent(movie.id)}/500/750`;
+      }
+
+      async function hydrateMoviePosters() {
+        const posterEls = Array.from(moviesGrid.querySelectorAll('img[data-movie-id]'));
+        await Promise.all(posterEls.map(async (imgEl) => {
+          const movieId = imgEl.getAttribute('data-movie-id');
+          const movie = moviesDatabase[movieId];
+          if (!movie || !window.cinemaMovieImages?.getRealMoviePoster) return;
+          const realPoster = await window.cinemaMovieImages.getRealMoviePoster(movie);
+          if (realPoster) {
+            imgEl.src = realPoster;
+          }
+        }));
+      }
+
+      function getDefaultShowtime(movieId) {
+        const movie = moviesDatabase[movieId];
+        if (!movie || !movie.showtimes || movie.showtimes.length === 0) return null;
+        const cinema = movie.showtimes[0];
+        const system = cinema.systems[0];
+        const time = system.times[0];
+        const showtimeId = `st-${movieId}-${time.time.replace(':', '')}-${time.hall.toLowerCase().replace(/\s+/g, '-')}`;
+        return {
+          movieId,
+          time: time.time,
+          hall: time.hall,
+          showtimeId
+        };
+      }
+
+      const allMovies = Object.values(moviesDatabase).map((movie) => ({
+        ...movie,
+        normalizedGenres: (movie.genres || []).map(normalizeGenreLabel)
+      }));
+      let activeGenre = 'all';
+      let activeKeyword = '';
+
+      function bindCardActions() {
+        document.querySelectorAll('.movie-card').forEach((card) => {
+          const movieId = card.getAttribute('data-movie-id');
+
+          card.addEventListener('click', () => {
+            window.location.href = `movie-details.html?id=${movieId}`;
+          });
+
+          const buyBtn = card.querySelector('.buy-ticket-btn');
+          if (buyBtn) {
+            buyBtn.addEventListener('click', (event) => {
+              event.stopPropagation();
+              window.authModule.requireLogin(() => {
+                const showtime = getDefaultShowtime(movieId);
+                if (!showtime) {
+                  alert('ไม่พบข้อมูลรอบฉายสำหรับหนังเรื่องนี้');
+                  return;
+                }
+                sessionStorage.setItem('selectedMovieId', showtime.movieId);
+                sessionStorage.setItem('selectedTime', showtime.time);
+                sessionStorage.setItem('selectedHall', showtime.hall);
+                window.location.href = `seat-selection.html?showtimeId=${encodeURIComponent(showtime.showtimeId)}`;
+              });
+            });
+          }
+        });
+      }
+
+      function renderMovies(selectedGenre = 'all') {
+        activeGenre = selectedGenre;
+        const moviesToShow = selectedGenre === 'all'
+          ? allMovies
+          : allMovies.filter((movie) => movie.normalizedGenres.includes(selectedGenre));
+
+        const keyword = activeKeyword.trim().toLowerCase();
+        const filteredMovies = keyword
+          ? moviesToShow.filter((movie) => {
+              const bag = [movie.titleThai, movie.titleEng, ...(movie.normalizedGenres || [])].join(' ').toLowerCase();
+              return bag.includes(keyword);
+            })
+          : moviesToShow;
+
+        if (filteredMovies.length === 0) {
+          moviesGrid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">ไม่พบหนังในหมวดนี้</div>';
+          return;
+        }
+
+        moviesGrid.innerHTML = filteredMovies.map((movie) => `
+          <div class="group flex flex-col gap-3 movie-card cursor-pointer" data-movie-id="${movie.id}">
+            <div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-200 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+              <img alt="${movie.titleThai}" class="w-full h-full object-cover" data-movie-id="${movie.id}" src="${getPoster(movie)}" onerror="this.onerror=null;this.src='https://picsum.photos/seed/${encodeURIComponent(movie.id)}-fallback/500/750';" />
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <button class="buy-ticket-btn bg-primary text-white px-6 py-2 rounded-full font-bold shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  ซื้อตั๋ว
+                </button>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-lg truncate group-hover:text-primary transition-colors">${movie.titleThai}</h3>
+              <div class="flex items-center justify-between mt-1 text-sm text-slate-500">
+                <span>${movie.duration}</span>
+                <span class="border border-slate-300 text-xs px-1 rounded">${movie.ageLimit || 'G'}</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1 truncate">${movie.normalizedGenres.join(' • ')}</p>
+              <div class="mt-2 flex items-center gap-1 text-yellow-500 text-sm font-medium">
+                <span class="material-symbols-outlined text-base fill-current">star</span>
+                <span>${movie.rating}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        bindCardActions();
+        hydrateMoviePosters();
+      }
+
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const selectedGenre = button.getAttribute('data-genre');
+          filterButtons.forEach((btn) => {
+            btn.classList.remove('bg-slate-900', 'text-white');
+            btn.classList.add('bg-background-light', 'text-slate-600');
+          });
+          button.classList.remove('bg-background-light', 'text-slate-600');
+          button.classList.add('bg-slate-900', 'text-white');
+          renderMovies(selectedGenre);
+        });
+      });
+
+      if (pageSearchInput) {
+        let searchTimer = null;
+        pageSearchInput.addEventListener('input', () => {
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(() => {
+            activeKeyword = pageSearchInput.value || '';
+            renderMovies(activeGenre);
+          }, 120);
+        });
+      }
+      
+      renderMovies('all');
+    })();
+  </script>
+
+    <!-- Login Modal Backdrop & Container -->
+    <div id="auth-backdrop" class="fixed inset-0 bg-black/0 backdrop-blur-0 transition-all duration-300 z-40 hidden" style="pointer-events: none;"></div>
+
+    <!-- Login/Signup Modal -->
+    <div id="auth-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden p-4">
+      <div class="bg-background-light rounded-2xl border border-slate-300 shadow-2xl max-w-md w-full transform transition-all duration-300 overflow-hidden">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-slate-300">
+          <h2 class="text-2xl font-black text-slate-900" id="modal-title">เข้าสู่ระบบ</h2>
+          <button id="modal-close-btn" class="text-slate-400 hover:text-slate-600">
+            <span class="material-symbols-outlined text-2xl">close</span>
+          </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="p-6">
+          <!-- Tab Buttons -->
+          <div class="flex gap-2 mb-6 bg-slate-200 p-1 rounded-lg">
+            <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-login active bg-white text-slate-900" data-tab="login">
+              เข้าสู่ระบบ
+            </button>
+            <button class="auth-tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-colors tab-signup text-slate-600" data-tab="signup">
+              สร้างบัญชี
+            </button>
+          </div>
+
+          <!-- Login Form -->
+          <form id="login-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">อีเมล</label>
+              <input id="login-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">รหัสผ่าน</label>
+              <input id="login-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+            </div>
+            <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+              เข้าสู่ระบบ
+            </button>
+            <p class="text-slate-600 text-sm text-center" id="login-error"></p>
+          </form>
+
+          <!-- Signup Form -->
+          <form id="signup-form" class="space-y-4 hidden">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">ชื่อเล่น</label>
+              <input id="signup-nickname" type="text" placeholder="ชื่อของคุณ" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">อีเมล</label>
+              <input id="signup-email" type="email" placeholder="your@email.com" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">รหัสผ่าน</label>
+              <input id="signup-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">ยืนยันรหัสผ่าน</label>
+              <input id="signup-confirm-password" type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-background-light text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent" required/>
+            </div>
+            <button type="submit" class="w-full bg-primary hover:bg-pink-600 text-white py-2.5 rounded-lg font-bold transition-colors">
+              สร้างบัญชี
+            </button>
+            <p class="text-slate-600 text-sm text-center" id="signup-error"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Profile Menu -->
+    <div id="profile-menu" class="absolute top-20 right-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg hidden z-40 min-w-48">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-900 dark:text-white" id="user-name">ผู้ใช้</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400" id="user-email">email@example.com</p>
+      </div>
+      <button id="logout-btn" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">logout</span>
+        ออกจากระบบ
+      </button>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
+      import { initializeAuthUI } from './auth.js';
+
+      const firebaseConfig = {
+        apiKey: 'AIzaSyC0I4lXYHrxh1543AF1NZcdAYulS2jbftM',
+        authDomain: 'frame-4e170.firebaseapp.com',
+        projectId: 'frame-4e170',
+        storageBucket: 'frame-4e170.firebasestorage.app',
+        messagingSenderId: '585102075629',
+        appId: '1:585102075629:web:f5c9d3e3745b8a35570ee4',
+        measurementId: 'G-0TCR1Y4LP2'
+      };
+
+      const app = initializeApp(firebaseConfig);
+      initializeAuthUI(app, firebaseConfig);
+    </script>
+</body>
+</html>
